@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'eu',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -136,9 +136,9 @@ return [
     */
 
     'providers' => [
-
-        // Laravel IDE helper
+        //ide-helper
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
         /*
          * Laravel Framework Service Providers...
          */
