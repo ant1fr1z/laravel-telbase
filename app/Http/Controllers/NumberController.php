@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Number;
 use Illuminate\Http\Request;
 
-class ObjectsController extends Controller
+class NumberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +14,9 @@ class ObjectsController extends Controller
      */
     public function index()
     {
-        //
+        $number = new Number();
+        $number->number = '380666272599';
+        $number->save();
     }
 
     /**
@@ -43,9 +46,9 @@ class ObjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($number_id, $object_id)
+    public function show($id)
     {
-        return view('objects.show', ['number_id' => $number_id, 'object_id' => $object_id]);
+        //
     }
 
     /**

@@ -16,11 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('/save', [
-    'uses' => 'NumbersController@index',
+    'uses' => 'NumberController@index',
     'as'=> 'index'
 ]);
 
-Route::get('/{number_id}/create', [
-    'uses' => 'ObjectsController@create',
-    'as'=> 'objects.create'
+Route::get('/{number_id}/{object_id}', [
+    'uses' => 'ObjectsController@index',
+    'as'=> 'objects.show'
 ]);
