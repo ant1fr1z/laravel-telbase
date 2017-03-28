@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-    БД -> Создать объект1111
+    БД -> Создать объект333
 @endsection
 
 @section('content')
