@@ -15,16 +15,16 @@ class CreateObjectsTable extends Migration
     {
         Schema::create('objects', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('secondname');
-            $table->string('firstname');
-            $table->string('middlename');
-            $table->string('nickname');
-            $table->date('birthday');
-            $table->text('address');
-            $table->text('work');
-            $table->string('passport');
-            $table->string('code');
-            $table->text('other');
+            $table->string('secondname')->nullable();
+            $table->string('firstname')->nullable();
+            $table->string('middlename')->nullable();
+            $table->string('nickname')->nullable();
+            $table->date('birthday')->nullable();
+            $table->text('address')->nullable();
+            $table->text('work')->nullable();
+            $table->string('passport')->nullable();
+            $table->string('code')->nullable();
+            $table->text('other')->nullable();
             $table->string('source');
             $table->timestamps();
             $table->text('forsearch');

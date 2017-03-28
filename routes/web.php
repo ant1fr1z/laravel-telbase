@@ -20,7 +20,23 @@ Route::get('/save', [
     'as'=> 'index'
 ]);
 
+//страница создания объекта
 Route::get('/{number_id}/create', [
     'uses' => 'ObjectsController@create',
     'as'=> 'objects.create'
+]);
+//запрос на сохранение объекта
+Route::post('/{number_id}/create', [
+    'uses' => 'ObjectsController@store',
+    'as'=> 'objects.store'
+]);
+//страница редактирования объекта
+Route::get('/{object_id}/edit', [
+    'uses' => 'ObjectsController@edit',
+    'as'=> 'objects.edit'
+]);
+//страница редактирования объекта
+Route::post('/{object_id}/edit', [
+    'uses' => 'ObjectsController@update',
+    'as'=> 'objects.update'
 ]);
