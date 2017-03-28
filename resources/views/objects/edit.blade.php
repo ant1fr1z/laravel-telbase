@@ -109,26 +109,40 @@
         <div class="col-md-3"></div>
         <div class="col-md-3">
             <h3>Добавить номера</h3>
+            <form action="{{ route('objects.addnumber', ['$object_id' => $object_id]) }}" method="POST">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Введите номер...">
+                <input type="text" class="form-control" name="inputAddNumber" id="inputAddNumber" placeholder="Введите номер..." value="{{ Request::old('inputAddNumber') }}" >
                   <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">+</button>
+                      <button type="submit" class="btn btn-default" type="button">+</button>
                   </span>
             </div><!-- /input-group -->
+                <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
+            </form>
             <br>
-            <table class="table table-hover">
-                <tr>
-                    <th>№</th>
-                    <th>Del</th>
-                </tr>
-                <tr>
-                    <td>380666272599</td>
-                    <td>x</td>
-                </tr>
-                <tr>
-                    <td>380621457898</td>
-                    <td>x</td>
-                </tr>
+            @if($object->numbers->isEmpty())
+                pysto
+            @else
+                <table class="table table-hover">
+                    <tr>
+                        <th>№</th>
+                        <th>Del</th>
+                    </tr>
+                    @if($object->numbers->count() <= 1)
+                        @foreach($object->numbers as $number)
+                            <tr>
+                                <td>{{ $number->number }}</td>
+                                <td>x</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        @foreach($object->numbers as $number)
+                        <tr>
+                            <td>{{ $number->number }}</td>
+                            <td><a href="{{ route('objects.delnumber', ['$object_id' => $object_id, 'number_id' => $number->id]) }}" class="href">x</a></td>
+                        </tr>
+                        @endforeach
+                    @endif
+            @endif
             </table>
         </div>
     </div>

@@ -40,3 +40,14 @@ Route::post('/{object_id}/edit', [
     'uses' => 'ObjectsController@update',
     'as'=> 'objects.update'
 ]);
+//добавление номера к объекту
+Route::post('/{object_id}/addnumber', [
+    'uses' => 'ObjectsController@addnumber',
+    'as'=> 'objects.addnumber'
+]);
+//удаление номера от объекта
+Route::get('/{object_id}/{number_id}/delnumber', [
+    'uses' => 'ObjectsController@delnumber',
+    'as'=> 'objects.delnumber'
+]);
+

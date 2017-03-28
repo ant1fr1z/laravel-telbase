@@ -133,6 +133,25 @@ class ObjectsController extends Controller
 
     }
 
+    public function addnumber(Request $request, $object_id)
+    {
+        $number = Number::where('number', $request['inputAddNumber'])->first();
+        //dd($number);
+        if(empty($number)) {
+            return redirect()->back()->withErrors(['message' => 'Номера нету в базе, срочно зовите кого-то!']);
+        } else {
+            $number->objects()->attach([$object_id]);
+            return redirect()->back();
+        }
+    }
+
+    public function delnumber($object_id, $number_id)
+    {
+        $object = Object::findOrFail($object_id);
+        $object->numbers()->detach($number_id);
+        return redirect()->back();
+    }
+
     /**
      * Remove the specified resource from storage.
      *
