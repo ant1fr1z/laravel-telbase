@@ -21,9 +21,9 @@ class ObjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($number_id)
     {
-        //
+        return view('objects.create', ['number_id' => $number_id]);
     }
 
     /**
