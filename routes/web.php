@@ -20,7 +20,7 @@ Route::get('/save', [
     'as'=> 'index'
 ]);
 
-//страница создания объекта
+//страница создания объекта111
 Route::get('/{number_id}/create', [
     'uses' => 'ObjectsController@create',
     'as'=> 'objects.create'
