@@ -16,6 +16,7 @@ class CreateNumbersTable extends Migration
         Schema::create('numbers', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('number')->unsigned();
+            $table->bigInteger('object_id')->unsigned();
             $table->timestamps();
         });
     }

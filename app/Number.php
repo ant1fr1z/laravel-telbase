@@ -9,8 +9,8 @@ class Number extends Model
     protected $table = 'numbers';
     protected $guarded = ['id'];
 
-    public function objects()
+    public function object()
     {
-        return $this->belongsToMany('App\Object')->withTimestamps();
+        return $this->belongsTo('App\Object');
     }
 }

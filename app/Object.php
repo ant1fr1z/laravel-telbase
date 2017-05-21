@@ -11,6 +11,6 @@ class Object extends Model
 
     public function numbers()
     {
-        return $this->belongsToMany('App\Number')->withTimestamps();
+        return $this->hasMany('App\Number');
     }
 }

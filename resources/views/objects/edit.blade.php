@@ -5,8 +5,16 @@
 @endsection
 
 @section('content')
+    <tabs>
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#">Объект</a></li>
+            <li role="presentation"><a href="#">Связи</a></li>
+            <li role="presentation"><a href="#">База "Р"</a></li>
+        </ul>
+    </tabs>
     <div class="row">
         @if (count($errors) > 0)
+            <br>
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -100,7 +108,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Сохранить</button>
+                            <button type="submit" class="btn btn-default">Сохранить</button>
                     </div>
                 </div>
                 <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
@@ -108,7 +116,7 @@
         </div>
         <div class="col-md-3"></div>
         <div class="col-md-3">
-            <h3>Добавить номера</h3>
+            <h3>Вторые номера</h3>
             <form action="{{ route('objects.addnumber', ['$object_id' => $object_id]) }}" method="POST">
             <div class="input-group">
                 <input type="text" class="form-control" name="inputAddNumber" id="inputAddNumber" placeholder="Введите номер..." value="{{ Request::old('inputAddNumber') }}" >

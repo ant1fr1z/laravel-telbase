@@ -15,12 +15,17 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::post('/', [
+    'uses' => 'ObjectsController@show',
+    'as'=> 'objects.show'
+]);
+
 Route::get('/save', [
     'uses' => 'NumbersController@index',
     'as'=> 'index'
 ]);
 
-//страница создания объекта111
+//страница создания объекта
 Route::get('/{number_id}/create', [
     'uses' => 'ObjectsController@create',
     'as'=> 'objects.create'

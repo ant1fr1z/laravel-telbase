@@ -39,6 +39,7 @@ class ObjectsController extends Controller
     public function store(Request $request, $number_id)
     {
 
+        $number = Number::findOrFail($number_id);
         $this->validate($request, [
             'inputSecondName' => 'required_without_all:inputFirstName,inputMiddleName,inputNickname',
             'inputFirstName' => 'required_without_all:inputSecondName,inputMiddleName,inputNickname',
@@ -64,7 +65,7 @@ class ObjectsController extends Controller
         $object->forsearch = $forsearch;
         $object->save();
 
-        $object->numbers()->attach($number_id);
+        $object->numbers()->save($number);
 
         return redirect()->route('objects.edit', ['$object_id' => $object->id]);
 
@@ -77,9 +78,21 @@ class ObjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($number_id, $object_id)
+    public function show(Request $request)
     {
-        return view('objects.show', ['number_id' => $number_id, 'object_id' => $object_id]);
+        $this->validate($request, [
+            'inputNumber' => 'required|exists:numbers,number'
+        ]);
+
+
+        $number = Number::with('object')->where('number', $request['inputNumber'])->first();
+        //dd($number);
+
+        if (empty($number->object))
+        {
+            return redirect()->back()->withErrors(['message' => 'Номер не найден в базе. <a href="#">Добавить?</a>']);
+        }
+        return view('objects.show', compact('number'));
     }
 
     /**
@@ -140,15 +153,17 @@ class ObjectsController extends Controller
         if(empty($number)) {
             return redirect()->back()->withErrors(['message' => 'Номера нету в базе, срочно зовите кого-то!']);
         } else {
-            $number->objects()->attach([$object_id]);
+            $object = Object::findOrFail($object_id);
+            $number->object()->associate($object)->save();
+
             return redirect()->back();
         }
     }
 
     public function delnumber($object_id, $number_id)
     {
-        $object = Object::findOrFail($object_id);
-        $object->numbers()->detach($number_id);
+        $number = Number::findOrFail($number_id);
+        $number->object()->dissociate()->save();
         return redirect()->back();
     }
 
