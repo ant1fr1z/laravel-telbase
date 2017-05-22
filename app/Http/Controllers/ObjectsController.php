@@ -104,7 +104,7 @@ class ObjectsController extends Controller
     public function edit($object_id)
     {
         $object = Object::find($object_id);
-        return view('objects.edit', compact('object'), ['object_id' => $object_id]);
+        return view('objects.edit', compact('object'));
 
     }
 
@@ -177,4 +177,18 @@ class ObjectsController extends Controller
     {
         //
     }
+
+    /**
+     * Страничка связей объекта
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function links($object_id)
+    {
+        $object = Object::find($object_id);
+        return view('objects.links', compact('object'));
+
+    }
+
 }

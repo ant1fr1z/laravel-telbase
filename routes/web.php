@@ -56,3 +56,8 @@ Route::get('/{object_id}/{number_id}/delnumber', [
     'as'=> 'objects.delnumber'
 ]);
 
+//страница связей объекта
+Route::get('/{object_id}/links', [
+    'uses' => 'ObjectsController@links',
+    'as'=> 'objects.links'
+]);
