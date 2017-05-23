@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', [
+    'uses' => 'ObjectsController@index',
+    'as'=> 'index'
+]);
 
 Route::post('/', [
     'uses' => 'ObjectsController@show',
@@ -22,7 +23,7 @@ Route::post('/', [
 
 Route::get('/save', [
     'uses' => 'NumbersController@index',
-    'as'=> 'index'
+    'as'=> 'save'
 ]);
 
 //страница создания объекта

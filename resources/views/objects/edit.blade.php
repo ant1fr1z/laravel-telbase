@@ -25,31 +25,13 @@
         @endif
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
             <h3>Редактировать объект для {{ $object->id }}</h3>
             <form class="form-horizontal" action="{{ route('objects.update', ['object_id' => $object->id]) }}" method="POST">
                 <div class="form-group">
-                    <label for="inputSecondName" class="col-sm-2 control-label">Фамилия</label>
+                    <label for="inputFio" class="col-sm-2 control-label">ФИО/Кличка</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputSecondName" id="inputSecondName" placeholder="Фамилия" value="{{ $object->secondname }}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputFirstName" class="col-sm-2 control-label">Имя</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputFirstName" id="inputFirstName" placeholder="Имя" value="{{ $object->firstname }}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputMiddleName" class="col-sm-2 control-label">Отчество</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputMiddleName" id="inputMiddleName" placeholder="Отчество" value="{{ $object->middlename }}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputNickname" class="col-sm-2 control-label">Кличка</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputNickname" id="inputNickname" placeholder="Кличка" value="{{ $object->nickname }}">
+                        <input type="text" class="form-control" name="inputFio" id="inputFio" placeholder="ФИО/Кличка" value="{{ $object->fio }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -114,7 +96,7 @@
                 <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
             </form>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-2"></div>
         <div class="col-md-3">
             <h3>Вторые номера</h3>
             <form action="{{ route('objects.addnumber', ['object_id' => $object->id]) }}" method="POST">

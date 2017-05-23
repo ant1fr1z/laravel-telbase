@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Number;
 use App\Object;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
 class ObjectsController extends Controller
@@ -16,7 +17,7 @@ class ObjectsController extends Controller
      */
     public function index()
     {
-        //
+        return view('index');
     }
 
     /**
@@ -41,19 +42,13 @@ class ObjectsController extends Controller
 
         $number = Number::findOrFail($number_id);
         $this->validate($request, [
-            'inputSecondName' => 'required_without_all:inputFirstName,inputMiddleName,inputNickname',
-            'inputFirstName' => 'required_without_all:inputSecondName,inputMiddleName,inputNickname',
-            'inputMiddleName' => 'required_without_all:inputSecondName,inputFirstName,inputNickname',
-            'inputNickname' => 'required_without_all:inputSecondName,inputFirstName,inputMiddleName',
+            'inputFio' => 'required',
             'inputBirthDay' => 'sometimes|nullable|date',
             'inputSource' => 'required'
         ]);
 
         $object = new Object();
-        $object->secondname = $request['inputSecondName'];
-        $object->firstname = $request['inputFirstName'];
-        $object->middlename = $request['inputMiddleName'];
-        $object->nickname = $request['inputNickname'];
+        $object->fio = $request['inputFio'];
         $object->birthday = $request['inputBirthDay'];
         $object->address = $request['inputAddress'];
         $object->work = $request['inputWork'];
@@ -61,8 +56,6 @@ class ObjectsController extends Controller
         $object->code = $request['inputCode'];
         $object->other = $request['inputOther'];
         $object->source = $request['inputSource'];
-        $forsearch = $object->secondname.' '.$object->firstname.' '.$object->middlename.' '.$object->nickname;
-        $object->forsearch = $forsearch;
         $object->save();
 
         $object->numbers()->save($number);
@@ -80,9 +73,14 @@ class ObjectsController extends Controller
      */
     public function show(Request $request)
     {
+        $error_messages = [
+            'inputNumber.required' => 'Поле не может быть пустым!',
+            'inputNumber.exists' => 'Внутренняя ошибка, срочно зовите администратора!',
+        ];
+
         $this->validate($request, [
             'inputNumber' => 'required|exists:numbers,number'
-        ]);
+        ], $error_messages);
 
 
         $number = Number::with('object')->where('number', $request['inputNumber'])->first();
@@ -92,6 +90,7 @@ class ObjectsController extends Controller
         {
             return redirect()->back()->withErrors(['message' => 'Номер не найден в базе. <a href="' . route('objects.create', ['number_id' => $number->id]) . '">Добавить?</a>']);
         }
+        $request->flash();
         return view('objects.show', compact('number'));
     }
 
@@ -118,19 +117,13 @@ class ObjectsController extends Controller
     public function update(Request $request, $object_id)
     {
         $this->validate($request, [
-            'inputSecondName' => 'required_without_all:inputFirstName,inputMiddleName,inputNickname',
-            'inputFirstName' => 'required_without_all:inputSecondName,inputMiddleName,inputNickname',
-            'inputMiddleName' => 'required_without_all:inputSecondName,inputFirstName,inputNickname',
-            'inputNickname' => 'required_without_all:inputSecondName,inputFirstName,inputMiddleName',
+            'inputFio' => 'required',
             'inputBirthDay' => 'sometimes|nullable|date',
             'inputSource' => 'required'
         ]);
 
         $object = Object::findOrFail($object_id);
-        $object->secondname = $request['inputSecondName'];
-        $object->firstname = $request['inputFirstName'];
-        $object->middlename = $request['inputMiddleName'];
-        $object->nickname = $request['inputNickname'];
+        $object->fio = $request['inputFio'];
         $object->birthday = $request['inputBirthDay'];
         $object->address = $request['inputAddress'];
         $object->work = $request['inputWork'];
@@ -138,8 +131,6 @@ class ObjectsController extends Controller
         $object->code = $request['inputCode'];
         $object->other = $request['inputOther'];
         $object->source = $request['inputSource'];
-        $forsearch = $object->secondname.' '.$object->firstname.' '.$object->middlename.' '.$object->nickname;
-        $object->forsearch = $forsearch;
         $object->save();
 
         return redirect()->back();
@@ -151,7 +142,7 @@ class ObjectsController extends Controller
         $number = Number::where('number', $request['inputAddNumber'])->first();
         //dd($number);
         if(empty($number)) {
-            return redirect()->back()->withErrors(['message' => 'Номера нету в базе, срочно зовите кого-то!']);
+            return redirect()->back()->withErrors(['message' => 'Внутренняя ошибка, срочно зовите администратора!']);
         } else {
             $object = Object::findOrFail($object_id);
             $number->object()->associate($object)->save();
@@ -199,16 +190,21 @@ class ObjectsController extends Controller
      */
     public function linkModal(Request $request)
     {
+        $error_messages = [
+            'object2number.required' => 'Поле "Объект 2" не может быть пустым!',
+            'object2number.exists' => 'Внутренняя ошибка, срочно зовите администратора!',
+        ];
+
         $this->validate($request, [
             'object2number' => 'required|exists:numbers,number'
-        ]);
+        ], $error_messages);
 
         $object2number = Number::with('object')->where('number', $request['object2number'])->first();
-        if (!empty($object2number))
+        if (!empty($object2number->object))
         {
-            return response()->json(['object2' => $object2number]);
+            return response()->json(['number2' => $object2number]);
         } else {
-            return response()->json(['error' => 'Второй объект не найден в базе. Добавить?']);
+            return response()->json(['object2number' => 'Второй объект не найден в базе. <a href="' . route('objects.create', ['number_id' => $object2number->id]) . '">Добавить?</a>'], 404);
         }
     }
 

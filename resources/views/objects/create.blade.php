@@ -21,27 +21,9 @@
             <h3>Создать объект для {{ $number_id }}</h3>
             <form class="form-horizontal" action="{{ route('objects.store', ['number_id' => $number_id]) }}" method="POST">
                 <div class="form-group">
-                    <label for="inputSecondName" class="col-sm-2 control-label">Фамилия</label>
+                    <label for="inputFio" class="col-sm-2 control-label">ФИО/Кличка</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputSecondName" id="inputSecondName" placeholder="Фамилия" value="{{ Request::old('inputSecondName') }}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputFirstName" class="col-sm-2 control-label">Имя</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputFirstName" id="inputFirstName" placeholder="Имя" value="{{ Request::old('inputFirstName') }}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputMiddleName" class="col-sm-2 control-label">Отчество</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputMiddleName" id="inputMiddleName" placeholder="Отчество" value="{{ Request::old('inputMiddleName') }}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputNickname" class="col-sm-2 control-label">Кличка</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputNickname" id="inputNickname" placeholder="Кличка" value="{{ Request::old('inputNickname') }}">
+                        <input type="text" class="form-control" name="inputFio" id="inputFio" placeholder="ФИО/Кличка" value="{{ Request::old('inputFio') }}">
                     </div>
                 </div>
                 <div class="form-group">

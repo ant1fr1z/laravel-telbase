@@ -8,30 +8,13 @@
     @include('includes.searchform')
     <br>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
+            <h3>{{ $number->number }}</h3>
             <form class="form-horizontal">
                 <div class="form-group">
-                    <label for="inputSecondName" class="col-sm-2 control-label">Фамилия</label>
+                    <label for="inputFio" class="col-sm-2 control-label">ФИО/Кличка</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputSecondName" id="inputSecondName" placeholder="Фамилия" value="{{ $number->object->secondname }}" readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputFirstName" class="col-sm-2 control-label">Имя</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputFirstName" id="inputFirstName" placeholder="Имя" value="{{ $number->object->firstname }}" readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputMiddleName" class="col-sm-2 control-label">Отчество</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputMiddleName" id="inputMiddleName" placeholder="Отчество" value="{{ $number->object->middlename }}" readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputNickname" class="col-sm-2 control-label">Кличка</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputNickname" id="inputNickname" placeholder="Кличка" value="{{ $number->object->nickname }}" readonly>
+                        <input type="text" class="form-control" name="inputFio" id="inputFio" placeholder="ФИО/Кличка" value="{{ $number->object->fio }}" readonly>
                     </div>
                 </div>
                 <div class="form-group">
@@ -91,8 +74,12 @@
 
             </form>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-2"></div>
         <div class="col-md-3">
+            <h3>Действия</h3>
+            123
+            123
+            123
         </div>
     </div>
 @endsection

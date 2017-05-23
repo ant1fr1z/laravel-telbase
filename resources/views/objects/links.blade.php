@@ -38,16 +38,16 @@
             <div class="col-md-5">
                 <div class="form-group">
                     <label for="inputObject1">Объект 1</label>
-                        <input type="text" class="form-control" name="inputObject1" id="inputObject1" placeholder="Объект 1" value="{{ $object->forsearch }}" readonly>
+                        <input type="text" class="form-control" name="inputObject1" id="inputObject1" placeholder="Объект 1" value="{{ $object->fio }}" readonly>
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group">
                     <label for="inputLinkType">Тип связи</label>
-                    <select class="form-control">
-                        <option>=></option>
-                        <option><=</option>
-                        <option><=></option>
+                    <select class="form-control" id="inputLinkType">
+                        <option value="<="><=</option>
+                        <option value="=>">=></option>
+                        <option value="<=>"><=></option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -73,28 +73,8 @@
                     <h4 class="modal-title">Найден следующий объект. Добавить связь?</h4>
                 </div>
                 <div class="modal-body">
-
-                    <table class="table table-hover">
-                        <tr>
-                            <th>№</th>
-                            <th>Идентификатор</th>
-                            <th>ФИО</th>
-                            <th>Ред.</th>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2</td>
-                        </tr>
+                    <table class="table table-hover" id="table-modal">
                     </table>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
