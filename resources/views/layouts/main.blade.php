@@ -22,6 +22,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="/js/jquery.ui.datepicker-ru.js"></script>
 <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="{{ URL::to('js/my.js') }}"></script>
 @stack('scripts')
 </body>
 </html>
