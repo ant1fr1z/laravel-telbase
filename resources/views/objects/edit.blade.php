@@ -8,7 +8,7 @@
     <tabs>
         <ul class="nav nav-tabs">
             <li role="presentation" class="active"><a href="#">Объект</a></li>
-            <li role="presentation"><a href="{{ route('objects.links', ['$object_id' => $object->id]) }}">Связи</a></li>
+            <li role="presentation"><a href="{{ route('objects.links', ['object_id' => $object->id]) }}">Связи</a></li>
             <li role="presentation"><a href="#">База "Р"</a></li>
         </ul>
     </tabs>
@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-md-6">
             <h3>Редактировать объект для {{ $object->id }}</h3>
-            <form class="form-horizontal" action="{{ route('objects.update', ['$object_id' => $object->id]) }}" method="POST">
+            <form class="form-horizontal" action="{{ route('objects.update', ['object_id' => $object->id]) }}" method="POST">
                 <div class="form-group">
                     <label for="inputSecondName" class="col-sm-2 control-label">Фамилия</label>
                     <div class="col-sm-10">
@@ -117,7 +117,7 @@
         <div class="col-md-3"></div>
         <div class="col-md-3">
             <h3>Вторые номера</h3>
-            <form action="{{ route('objects.addnumber', ['$object_id' => $object->id]) }}" method="POST">
+            <form action="{{ route('objects.addnumber', ['object_id' => $object->id]) }}" method="POST">
             <div class="input-group">
                 <input type="text" class="form-control" name="inputAddNumber" id="inputAddNumber" placeholder="Введите номер..." value="{{ Request::old('inputAddNumber') }}" >
                   <span class="input-group-btn">
@@ -146,7 +146,7 @@
                         @foreach($object->numbers as $number)
                         <tr>
                             <td>{{ $number->number }}</td>
-                            <td><a href="{{ route('objects.delnumber', ['$object_id' => $object->id, 'number_id' => $number->id]) }}" class="href">x</a></td>
+                            <td><a href="{{ route('objects.delnumber', ['object_id' => $object->id, 'number_id' => $number->id]) }}" class="href">x</a></td>
                         </tr>
                         @endforeach
                     @endif

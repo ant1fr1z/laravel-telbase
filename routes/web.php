@@ -61,3 +61,10 @@ Route::get('/{object_id}/links', [
     'uses' => 'ObjectsController@links',
     'as'=> 'objects.links'
 ]);
+
+
+//страница связей объекта
+Route::post('/{object_id}/links', [
+    'uses' => 'ObjectsController@linkModal',
+    'as'=> 'objects.linkModal'
+]);

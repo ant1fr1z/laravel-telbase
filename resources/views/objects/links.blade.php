@@ -12,6 +12,14 @@
             <li role="presentation"><a href="#">База "Р"</a></li>
         </ul>
     </tabs>
+    <div class="row" id="errors" style="display:none">
+        <br>
+        <div class="alert alert-danger">
+            <ul>
+                <li></li>
+            </ul>
+        </div>
+    </div>
     <div class="row">
         @if (count($errors) > 0)
             <br>
@@ -65,7 +73,28 @@
                     <h4 class="modal-title">Найден следующий объект. Добавить связь?</h4>
                 </div>
                 <div class="modal-body">
-                    <p>One fine body&hellip;</p>
+
+                    <table class="table table-hover">
+                        <tr>
+                            <th>№</th>
+                            <th>Идентификатор</th>
+                            <th>ФИО</th>
+                            <th>Ред.</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                        </tr>
+                    </table>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
@@ -74,4 +103,10 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <script>
+        var token = '{{ Session::token() }}';
+        var url = '{{ route('objects.linkModal', ['object_id' => $object->id]) }}';
+        var object1id = '{{ $object->id }}';
+    </script>
 @endsection

@@ -90,7 +90,7 @@ class ObjectsController extends Controller
 
         if (empty($number->object))
         {
-            return redirect()->back()->withErrors(['message' => 'Номер не найден в базе. <a href="#">Добавить?</a>']);
+            return redirect()->back()->withErrors(['message' => 'Номер не найден в базе. <a href="' . route('objects.create', ['number_id' => $number->id]) . '">Добавить?</a>']);
         }
         return view('objects.show', compact('number'));
     }
@@ -189,6 +189,27 @@ class ObjectsController extends Controller
         $object = Object::find($object_id);
         return view('objects.links', compact('object'));
 
+    }
+
+    /**
+     * Страничка связей объекта
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function linkModal(Request $request)
+    {
+        $this->validate($request, [
+            'object2number' => 'required|exists:numbers,number'
+        ]);
+
+        $object2number = Number::with('object')->where('number', $request['object2number'])->first();
+        if (!empty($object2number))
+        {
+            return response()->json(['object2' => $object2number]);
+        } else {
+            return response()->json(['error' => 'Второй объект не найден в базе. Добавить?']);
+        }
     }
 
 }
