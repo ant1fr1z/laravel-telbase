@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Link;
 use App\Number;
 use App\Object;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
@@ -206,6 +208,16 @@ class ObjectsController extends Controller
         } else {
             return response()->json(['object2number' => 'Второй объект не найден в базе. <a href="' . route('objects.create', ['number_id' => $object2number->id]) . '">Добавить?</a>'], 404);
         }
+    }
+
+    public function addLink(Request $request)
+    {
+        $link = new Link();
+        $link->object1 = $request['object1id'];
+        $link->object2 = $request['object2id'];
+        $link->linktype = $request['linktype'];
+        $link->description = $request['description'];
+        $link->save();
     }
 
 }

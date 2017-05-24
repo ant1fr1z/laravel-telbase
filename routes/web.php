@@ -69,3 +69,9 @@ Route::post('/{object_id}/links', [
     'uses' => 'ObjectsController@linkModal',
     'as'=> 'objects.linkModal'
 ]);
+
+//модальное окно из которого подтверждается связь объекта
+Route::put('/{object_id}/links', [
+    'uses' => 'ObjectsController@addLink',
+    'as'=> 'objects.addLink'
+]);

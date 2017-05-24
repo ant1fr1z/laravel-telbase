@@ -20,56 +20,57 @@
             </ul>
         </div>
     </div>
+    <form action="" method="POST">
     <div class="row">
-        @if (count($errors) > 0)
-            <br>
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-    </div>
-    <div class="row">
-        <form action="" method="POST">
             <h3>Добавить связь</h3>
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="inputObject1">Объект 1</label>
-                        <input type="text" class="form-control" name="inputObject1" id="inputObject1" placeholder="Объект 1" value="{{ $object->fio }}" readonly>
+                    <input type="text" class="form-control" name="inputObject1" id="inputObject1" placeholder="Объект 1"
+                           value="{{ $object->fio }}" readonly>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <div class="form-group">
-                    <label for="inputLinkType">Тип связи</label>
+                    <label for="inputLinkType">Тип</label>
                     <select class="form-control" id="inputLinkType">
                         <option value="<="><=</option>
                         <option value="=>">=></option>
                         <option value="<=>"><=></option>
                     </select>
                 </div>
+            </div>
+            <div class="col-md-3">
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="button" class="btn btn-default" id="addlink">Создать</button>
-                    </div>
+                    <label for="inputObject2">Объект 2</label>
+                    <input type="text" class="form-control" name="inputObject2" id="inputObject2" placeholder="Объект 2"
+                           value="">
                 </div>
-                <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
             </div>
-        <div class="col-md-5">
-            <div class="form-group">
-                <label for="inputObject2">Объект 2</label>
-                    <input type="text" class="form-control" name="inputObject2" id="inputObject2" placeholder="Объект 2" value="">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="inputDescription">Описание связи</label>
+                    <textarea class="form-control" rows="3" name="inputDescription" id="inputDescription"
+                              placeholder="Описание связи"></textarea>
+                </div>
             </div>
-        </div>
-        </form>
     </div>
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="addlink-modal">
+    <div class="row">
+        <div class="col-md-offset-5 col-md-2">
+            <div class="form-group">
+                <button type="button" class="btn btn-default" id="checklink">Создать</button>
+            </div>
+            <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
+        </div>
+    </div>
+    </form>
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="addlink-modal">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Найден следующий объект. Добавить связь?</h4>
                 </div>
                 <div class="modal-body">
@@ -78,7 +79,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary">Да</button>
+                    <button type="button" class="btn btn-primary" id="addlink">Да</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
