@@ -12,16 +12,43 @@
             <li role="presentation"><a href="#">База "Р"</a></li>
         </ul>
     </tabs>
+    <br>
+    @if(!$objectLinks->isEmpty())
+        <div class="row">
+            <h3>Текущие связи</h3>
+            <div class="col-md-12">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Объект 1</th>
+                        <th>Тип</th>
+                        <th>Объект 2</th>
+                        <th>Описание</th>
+                        <th>Добавлено</th>
+                        <th>Удалить</th>
+                    </tr>
+                    @foreach($objectLinks as $objectLink)
+                        <tr>
+                            <td><a href="{{ route('objects.edit', ['$object_id' => $objectLink->object1info->id]) }}">{{ $objectLink->object1info->fio }}</a></td>
+                            <td>{{ $objectLink->linktype }}</td>
+                            <td><a href="{{ route('objects.edit', ['$object_id' => $objectLink->object2info->id]) }}">{{ $objectLink->object2info->fio }}</a></td>
+                            <td>{{ $objectLink->description }}</td>
+                            <td>{{ $objectLink->created_at }}</td>
+                            <td><a href="{{ route('objects.delLink', ['$link_id' => $objectLink->id]) }}">x</a></td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
+    @endif
     <div class="row" id="errors" style="display:none">
         <br>
         <div class="alert alert-danger">
             <ul>
-                <li></li>
             </ul>
         </div>
     </div>
     <form action="" method="POST">
-    <div class="row">
+        <div class="row">
             <h3>Добавить связь</h3>
             <div class="col-md-3">
                 <div class="form-group">
@@ -54,15 +81,15 @@
                               placeholder="Описание связи"></textarea>
                 </div>
             </div>
-    </div>
-    <div class="row">
-        <div class="col-md-offset-5 col-md-2">
-            <div class="form-group">
-                <button type="button" class="btn btn-default" id="checklink">Создать</button>
-            </div>
-            <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-offset-5 col-md-2">
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" id="checklink">Создать</button>
+                </div>
+                <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
+            </div>
+        </div>
     </form>
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          id="addlink-modal">

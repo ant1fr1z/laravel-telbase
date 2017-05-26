@@ -180,7 +180,13 @@ class ObjectsController extends Controller
     public function links($object_id)
     {
         $object = Object::find($object_id);
-        return view('objects.links', compact('object'));
+        $objectLinks = Link::where('object1', $object_id)->orWhere('object2', $object_id)->get();
+        $objectLinks->each(function ($item, $key) {
+            $item->object1info = Object::find($item->object1);
+            $item->object2info = Object::find($item->object2);
+        });
+
+        return view('objects.links', compact('object', 'objectLinks'));
 
     }
 
@@ -195,10 +201,12 @@ class ObjectsController extends Controller
         $error_messages = [
             'object2number.required' => 'Поле "Объект 2" не может быть пустым!',
             'object2number.exists' => 'Внутренняя ошибка, срочно зовите администратора!',
+            'description.required' => 'Описание связи не может быть пустым!',
         ];
 
         $this->validate($request, [
-            'object2number' => 'required|exists:numbers,number'
+            'object2number' => 'required|exists:numbers,number',
+            'description' => 'required',
         ], $error_messages);
 
         $object2number = Number::with('object')->where('number', $request['object2number'])->first();
@@ -218,6 +226,11 @@ class ObjectsController extends Controller
         $link->linktype = $request['linktype'];
         $link->description = $request['description'];
         $link->save();
+    }
+    public function delLink($link_id)
+    {
+        //dd('удаляем линк');
+        return redirect()->back();
     }
 
 }

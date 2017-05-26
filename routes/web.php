@@ -75,3 +75,9 @@ Route::put('/{object_id}/links', [
     'uses' => 'ObjectsController@addLink',
     'as'=> 'objects.addLink'
 ]);
+
+//удаление связи объекта
+Route::get('/{link_id}/delete', [
+    'uses' => 'ObjectsController@delLink',
+    'as'=> 'objects.delLink'
+]);
