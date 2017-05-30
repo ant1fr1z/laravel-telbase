@@ -114,7 +114,7 @@
             @else
                 <table class="table table-hover">
                     <tr>
-                        <th>№</th>
+                        <th>Номер</th>
                         <th>Del</th>
                     </tr>
                     @if($object->numbers->count() <= 1)

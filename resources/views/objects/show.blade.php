@@ -77,9 +77,10 @@
         <div class="col-md-2"></div>
         <div class="col-md-3">
             <h3>Действия</h3>
-            123
-            123
-            123
+            <div class="list-group">
+                <a href="{{ route('objects.edit', ['object_id' => $number->object->id]) }}" class="list-group-item">Редактировать</a>
+                <a href="#" class="list-group-item">Удалить</a>
+            </div>
         </div>
     </div>
 @endsection

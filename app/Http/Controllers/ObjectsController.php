@@ -229,7 +229,7 @@ class ObjectsController extends Controller
     }
     public function delLink($link_id)
     {
-        //dd('удаляем линк');
+        Link::destroy($link_id);
         return redirect()->back();
     }
 
