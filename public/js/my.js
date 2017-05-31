@@ -41,3 +41,10 @@ $('button#checklink').on('click', function () {
         }
     })
 });
+
+$("#searchform").validate({
+    submitHandler: function(form) {
+        alert($( "input[id='inputNumber']" ));
+        form.submit();
+    }
+});

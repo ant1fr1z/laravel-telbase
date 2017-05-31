@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4">
-        <form class="form-horizontal" action="{{ route('objects.show') }}" method="POST">
+        <form class="form-horizontal" id="searchform" action="{{ route('objects.show') }}" method="POST">
             <div class="input-group">
                 <input type="text" class="form-control" name="inputNumber" id="inputNumber" placeholder="Введите номер..." value="{{ Request::old('inputNumber') }}">
                   <span class="input-group-btn">
