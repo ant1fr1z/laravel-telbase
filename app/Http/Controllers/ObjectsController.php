@@ -36,7 +36,7 @@ class ObjectsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $number_id)
@@ -70,7 +70,7 @@ class ObjectsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -88,8 +88,7 @@ class ObjectsController extends Controller
         $number = Number::with('object')->where('number', $request['inputNumber'])->first();
         //dd($number);
 
-        if (empty($number->object))
-        {
+        if (empty($number->object)) {
             return redirect()->back()->withErrors(['message' => 'Номер не найден в базе. <a href="' . route('objects.create', ['number_id' => $number->id]) . '">Добавить?</a>']);
         }
         $request->flash();
@@ -99,7 +98,7 @@ class ObjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($object_id)
@@ -112,8 +111,8 @@ class ObjectsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $object_id)
@@ -143,7 +142,7 @@ class ObjectsController extends Controller
     {
         $number = Number::where('number', $request['inputAddNumber'])->first();
         //dd($number);
-        if(empty($number)) {
+        if (empty($number)) {
             return redirect()->back()->withErrors(['message' => 'Внутренняя ошибка, срочно зовите администратора!']);
         } else {
             $object = Object::findOrFail($object_id);
@@ -163,7 +162,7 @@ class ObjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -174,7 +173,7 @@ class ObjectsController extends Controller
     /**
      * Страничка связей объекта
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function links($object_id)
@@ -193,7 +192,7 @@ class ObjectsController extends Controller
     /**
      * Страничка связей объекта
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function linkModal(Request $request)
@@ -210,8 +209,7 @@ class ObjectsController extends Controller
         ], $error_messages);
 
         $object2number = Number::with('object')->where('number', $request['object2number'])->first();
-        if (!empty($object2number->object))
-        {
+        if (!empty($object2number->object)) {
             return response()->json(['number2' => $object2number]);
         } else {
             return response()->json(['object2number' => 'Второй объект не найден в базе. <a href="' . route('objects.create', ['number_id' => $object2number->id]) . '">Добавить?</a>'], 404);
@@ -227,10 +225,28 @@ class ObjectsController extends Controller
         $link->description = $request['description'];
         $link->save();
     }
+
     public function delLink($link_id)
     {
         Link::destroy($link_id);
         return redirect()->back();
     }
 
+    public function list(Request $request)
+    {
+        //dd($request->all());
+        if(!empty($request->all())) {
+            $error_messages = [
+                'inputList.required' => 'Поле не может быть пустым!',
+            ];
+
+            $this->validate($request, [
+                'inputList' => 'required',
+            ], $error_messages);
+
+
+        }
+
+        return view('objects.list');
+    }
 }

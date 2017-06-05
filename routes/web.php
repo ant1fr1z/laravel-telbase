@@ -11,16 +11,20 @@
 |
 */
 
+//главная
 Route::get('/', [
     'uses' => 'ObjectsController@index',
     'as'=> 'index'
 ]);
 
+//отображение найденого объекта
 Route::post('/', [
+    'middleware' => 'telnumber',
     'uses' => 'ObjectsController@show',
     'as'=> 'objects.show'
 ]);
 
+//temp
 Route::get('/save', [
     'uses' => 'NumbersController@index',
     'as'=> 'save'
@@ -31,6 +35,19 @@ Route::get('/{number_id}/create', [
     'uses' => 'ObjectsController@create',
     'as'=> 'objects.create'
 ]);
+
+//поиск по списку
+Route::get('/list', [
+    'uses' => 'ObjectsController@list',
+    'as'=> 'objects.list'
+]);
+
+//поиск по списку
+Route::post('/list', [
+    'uses' => 'ObjectsController@list',
+    'as'=> 'objects.list'
+]);
+
 //запрос на сохранение объекта
 Route::post('/{number_id}/create', [
     'uses' => 'ObjectsController@store',
@@ -62,7 +79,6 @@ Route::get('/{object_id}/links', [
     'uses' => 'ObjectsController@links',
     'as'=> 'objects.links'
 ]);
-
 
 //страница связей объекта
 Route::post('/{object_id}/links', [
