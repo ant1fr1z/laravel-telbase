@@ -15,7 +15,7 @@ class NumbersController extends Controller
     public function index()
     {
         $number = new Number();
-        $number->number = '380666272551';
+        $number->number = '380666272599';
         $number->save();
         /**
         $object2number = Number::with('object')->where('number','380666272592')->first();

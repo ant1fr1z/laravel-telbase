@@ -237,7 +237,7 @@ class ObjectsController extends Controller
         return redirect()->back();
     }
 
-    public function list(Request $request)
+    public function searchlist(Request $request)
     {
         //dd($request->all());
         if(!empty($request->inputList)) {

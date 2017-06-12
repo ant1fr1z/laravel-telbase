@@ -38,13 +38,13 @@ Route::get('/{number_id}/create', [
 
 //поиск по списку
 Route::get('/list', [
-    'uses' => 'ObjectsController@list',
+    'uses' => 'ObjectsController@searchlist',
     'as'=> 'objects.list'
 ]);
 
 //поиск по списку
 Route::post('/list', [
-    'uses' => 'ObjectsController@list',
+    'uses' => 'ObjectsController@searchlist',
     'as'=> 'objects.list'
 ]);
 
