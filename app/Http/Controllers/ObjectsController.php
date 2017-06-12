@@ -235,7 +235,7 @@ class ObjectsController extends Controller
     public function list(Request $request)
     {
         //dd($request->all());
-        if(!empty($request->all())) {
+        if(!empty($request->inputList)) {
             $error_messages = [
                 'inputList.required' => 'Поле не может быть пустым!',
             ];
@@ -244,9 +244,11 @@ class ObjectsController extends Controller
                 'inputList' => 'required',
             ], $error_messages);
 
-
+            $numberList = explode("\r\n", $request['inputList']);
+            $request->flash();
+            $objects = Number::with('object')->whereIn('number', $numberList)->simplePaginate(100);
         }
 
-        return view('objects.list');
+            return view('objects.list', compact('objects'));
     }
 }

@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <label for="inputList" class="col-sm-2 control-label">Список</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="7" name="inputList" id="inputList" placeholder="Список"></textarea>
+                        <textarea class="form-control" rows="7" name="inputList" id="inputList" placeholder="Список">{{ Request::old('inputList') }}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -36,5 +36,29 @@
                 </ul>
             </div>
         @endif
+            @if (isset($objects))
+    @if ($objects->count() > 0)
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>№</th>
+                                <th>Идентификатор</th>
+                                <th>ФИО</th>
+                                <th>Ред.</th>
+                            </tr>
+        @foreach( $objects as $object)
+                                <tr>
+                                    <td>1</td>
+                                    <td>{{ $object->number }}</td>
+                                    <td>{{ $object->object->fio }}</td>
+                                    <td><a href="{{ route('objects.edit', ['object_id' => $object->object->id]) }}">Ред</a></td>
+                                </tr>
+        @endforeach
+        </table>
     </div>
+    </div>
+    {{ $objects->appends(['inputList' => $_REQUEST['inputList']])->links() }}
+    @endif
+    @endif
 @endsection
