@@ -141,10 +141,15 @@ class ObjectsController extends Controller
     public function addnumber(Request $request, $object_id)
     {
         $number = Number::where('number', $request['inputAddNumber'])->first();
+
         //dd($number);
         if (empty($number)) {
             return redirect()->back()->withErrors(['message' => 'Внутренняя ошибка, срочно зовите администратора!']);
         } else {
+
+            if (!is_null($number->object)) {
+                return redirect()->back()->withErrors(['message' => 'Номер уже имеет привязку к <a href="' . route('objects.edit', ['$object_id' => $number->object->id]) . '">объекту</a>!']);
+            }
             $object = Object::findOrFail($object_id);
             $number->object()->associate($object)->save();
 
@@ -209,10 +214,10 @@ class ObjectsController extends Controller
         ], $error_messages);
 
         $object2number = Number::with('object')->where('number', $request['object2number'])->first();
-        if (!empty($object2number->object)) {
+        if (!is_null($object2number->object)) {
             return response()->json(['number2' => $object2number]);
         } else {
-            return response()->json(['object2number' => 'Второй объект не найден в базе. <a href="' . route('objects.create', ['number_id' => $object2number->id]) . '">Добавить?</a>'], 404);
+            return response()->json(['errors' => ['0' => 'Второй объект не найден в базе. <a href="' . route('objects.create', ['number_id' => $object2number->id]) . '">Добавить?</a>']], 404);
         }
     }
 
@@ -246,7 +251,7 @@ class ObjectsController extends Controller
 
             $numberList = explode("\r\n", $request['inputList']);
             $request->flash();
-            $objects = Number::with('object')->whereIn('number', $numberList)->simplePaginate(100);
+            $objects = Number::has('object')->with('object')->whereIn('number', $numberList)->simplePaginate(100);
         }
 
             return view('objects.list', compact('objects'));

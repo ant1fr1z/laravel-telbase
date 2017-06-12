@@ -18,7 +18,7 @@
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                        <li>{!! $error !!}</li>
                     @endforeach
                 </ul>
             </div>
@@ -26,7 +26,7 @@
     </div>
     <div class="row">
         <div class="col-md-7">
-            <h3>Редактировать объект для {{ $object->id }}</h3>
+            <h3>Редактировать объект</h3>
             <form class="form-horizontal" action="{{ route('objects.update', ['object_id' => $object->id]) }}" method="POST">
                 <div class="form-group">
                     <label for="inputFio" class="col-sm-2 control-label">ФИО/Кличка</label>

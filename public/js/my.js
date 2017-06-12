@@ -1,4 +1,4 @@
-//открытие модального окна если номера есть в базе
+//добавление связи к номеру, открытие модального окна если номера есть в базе
 $('button#checklink').on('click', function () {
     var object2 = $('input#inputObject2').val();
     $.ajax({
@@ -40,4 +40,23 @@ $('button#checklink').on('click', function () {
             $('div#errors').show();
         }
     })
+});
+
+//диалог при удалении связи
+$("a#dellink").on("click", function(e) {
+    var link = this;
+
+    e.preventDefault();
+
+    $("<div>Точно удалить эту связь?</div>").dialog({
+        modal: true,
+        buttons: {
+            "Да": function() {
+                window.location = link.href;
+            },
+            "Отмена": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
 });

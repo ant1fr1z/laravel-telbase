@@ -33,7 +33,7 @@
                             <td><a href="{{ route('objects.edit', ['$object_id' => $objectLink->object2info->id]) }}">{{ $objectLink->object2info->fio }}</a></td>
                             <td>{{ $objectLink->description }}</td>
                             <td>{{ $objectLink->created_at }}</td>
-                            <td><a href="{{ route('objects.delLink', ['$link_id' => $objectLink->id]) }}">x</a></td>
+                            <td><a href="{{ route('objects.delLink', ['$link_id' => $objectLink->id]) }}" id="dellink">x</a></td>
                         </tr>
                     @endforeach
                 </table>

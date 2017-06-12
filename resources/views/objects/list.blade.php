@@ -10,13 +10,13 @@
         <div class="col-md-4">
             <form class="form-horizontal" action="{{ route('objects.list') }}" method="POST">
                 <div class="form-group">
-                    <label for="inputList" class="col-sm-2 control-label">Список</label>
-                    <div class="col-sm-10">
+                    <label for="inputList" class="col-md-2 control-label">Список</label>
+                    <div class="col-md-10">
                         <textarea class="form-control" rows="7" name="inputList" id="inputList" placeholder="Список">{{ Request::old('inputList') }}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-md-offset-5 col-md-2">
                         <button type="submit" class="btn btn-default">Найти</button>
                     </div>
                 </div>
