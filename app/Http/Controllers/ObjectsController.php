@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
+use Excel;
 
 class ObjectsController extends Controller
 {
@@ -239,21 +240,29 @@ class ObjectsController extends Controller
 
     public function searchlist(Request $request)
     {
-        //dd($request->all());
-        if(!empty($request->inputList)) {
-            $error_messages = [
-                'inputList.required' => 'Поле не может быть пустым!',
-            ];
-
-            $this->validate($request, [
-                'inputList' => 'required',
-            ], $error_messages);
-
+        if(!is_null($request->inputList)) {
             $numberList = explode("\r\n", $request['inputList']);
             $request->flash();
-            $objects = Number::has('object')->with('object')->whereIn('number', $numberList)->simplePaginate(100);
-        }
-
+            $objects = Number::has('object')->with('object')->whereIn('number', $numberList)->Paginate(1000);
+            $objects->appends(['inputList' => $_REQUEST['inputList']]);
             return view('objects.list', compact('objects'));
+        }
+            return view('objects.list');
+    }
+
+    public function getexcel($data)
+    {
+        Excel::create('pol_'.time().'', function($excel) use($data) {
+            $excel->sheet('Список телефонов', function($sheet) use($data) {
+                $sheet->setOrientation('landscape');
+
+                $sheet->cell('A1', function($cell) use($data) {
+
+                    $cell->setValue($data);
+
+                });
+
+            });
+        })->export('xlsx');
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Number;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Excel;
 
 class NumbersController extends Controller
 {
@@ -14,10 +16,30 @@ class NumbersController extends Controller
      */
     public function index()
     {
+        $data = 'TEST';
+        Excel::create('pol_'.time().'', function($excel) use($data) {
+            $excel->sheet('Список телефонов', function($sheet) use($data) {
+                $sheet->setOrientation('landscape');
+
+                $sheet->cell('A1', function($cell) use($data) {
+
+                    $cell->setValue($data);
+
+                });
+
+            });
+        })->export('xlsx');
+        /**
         $number = new Number();
         $number->number = '380666272599';
         $number->save();
-        /**
+        $number = new Number();
+        $number->number = '380666272552';
+        $number->save();
+        $number = new Number();
+        $number->number = '380666272551';
+        $number->save();
+
         $object2number = Number::with('object')->where('number','380666272592')->first();
         if (!empty($object2number))
         {

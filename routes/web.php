@@ -48,6 +48,12 @@ Route::post('/list', [
     'as'=> 'objects.list'
 ]);
 
+//експорт в excel
+Route::get('/getexcel/{data}', [
+    'uses' => 'ObjectsController@getexcel',
+    'as'=> 'objects.getexcel'
+]);
+
 //запрос на сохранение объекта
 Route::post('/{number_id}/create', [
     'uses' => 'ObjectsController@store',
