@@ -77,8 +77,8 @@ class ObjectsController extends Controller
     public function show(Request $request)
     {
         $error_messages = [
-            'inputNumber.required' => 'Поле не может быть пустым!',
-            'inputNumber.exists' => 'Внутренняя ошибка, срочно зовите администратора!',
+            'inputNumber.required' => 'Поле не може бути пустим!',
+            'inputNumber.exists' => 'Помилка, швидше зовіть адміністратора!',
         ];
 
         $this->validate($request, [
@@ -90,7 +90,7 @@ class ObjectsController extends Controller
         //dd($number);
 
         if (empty($number->object)) {
-            return redirect()->back()->withErrors(['message' => 'Номер не найден в базе. <a href="' . route('objects.create', ['number_id' => $number->id]) . '">Добавить?</a>']);
+            return redirect()->back()->withErrors(['message' => 'Номер не знайдено в базі. <a href="' . route('objects.create', ['number_id' => $number->id]) . '">Додати?</a>']);
         }
         $request->flash();
         return view('objects.show', compact('number'));
@@ -145,11 +145,11 @@ class ObjectsController extends Controller
 
         //dd($number);
         if (empty($number)) {
-            return redirect()->back()->withErrors(['message' => 'Внутренняя ошибка, срочно зовите администратора!']);
+            return redirect()->back()->withErrors(['message' => 'Помилка, швидше зовіть адміністратора!']);
         } else {
 
             if (!is_null($number->object)) {
-                return redirect()->back()->withErrors(['message' => 'Номер уже имеет привязку к <a href="' . route('objects.edit', ['$object_id' => $number->object->id]) . '">объекту</a>!']);
+                return redirect()->back()->withErrors(['message' => 'Номер вже прив\'язаний  до <a href="' . route('objects.edit', ['$object_id' => $number->object->id]) . '">об\'єкту</a>!']);
             }
             $object = Object::findOrFail($object_id);
             $number->object()->associate($object)->save();
@@ -240,28 +240,52 @@ class ObjectsController extends Controller
 
     public function searchlist(Request $request)
     {
-        if(!is_null($request->inputList)) {
+        if ($request->isMethod('post')) {
+            $error_messages = [
+                'inputList.required' => 'Список не може бути порожнім!',
+            ];
+
+            $this->validate($request, [
+                'inputList' => 'required',
+            ], $error_messages);
+
             $numberList = explode("\r\n", $request['inputList']);
-            $request->flash();
-            $objects = Number::has('object')->with('object')->whereIn('number', $numberList)->Paginate(1000);
-            $objects->appends(['inputList' => $_REQUEST['inputList']]);
-            return view('objects.list', compact('objects'));
+            $objects = Number::has('object')->with('object')->whereIn('number', $numberList)->Paginate(500)->appends(['inputList' => $request['inputList']]);
+
+            if ($objects->count() >0) {
+                return view('objects.list', compact('numberList', 'objects'));
+            } else {
+                return view('objects.list')->withErrors(['messages' => 'Нічого не знайдено!']);
+            }
+
+
         }
-            return view('objects.list');
+        return view('objects.list');
     }
 
-    public function getexcel($data)
+    public function searchobject(Request $request)
     {
-        Excel::create('pol_'.time().'', function($excel) use($data) {
-            $excel->sheet('Список телефонов', function($sheet) use($data) {
+        return view('objects.searchobject');
+    }
+
+    public function getexcelfromlist(Request $request)
+    {
+        $objects = Number::has('object')->with('object')->whereIn('number', json_decode($request->numberList))->get()->toArray();
+        //dd($objects);
+        Excel::create('pol_'.time().'', function($excel) use($objects) {
+            $excel->sheet('Список телефонів', function($sheet) use($objects) {
                 $sheet->setOrientation('landscape');
+                $sheet->row(1, array('Ідентифікатор', 'ФІО', 'Дата народження', 'Адреса', 'Робота', 'Паспорт', 'Ід.код', 'Інше', 'Джерело', 'Додано', 'Оновлено'));
+                $sheet->row(1, function($row) {
 
-                $sheet->cell('A1', function($cell) use($data) {
-
-                    $cell->setValue($data);
+                    $row->setBackground('#D3D3D3');
+                    $row->setFontSize(12);
+                    $row->setFontWeight('bold');
 
                 });
-
+                foreach ($objects as $object) {
+                    $sheet->appendRow(array($object['number'], $object['object']['fio'], $object['object']['birthday'], $object['object']['address'], $object['object']['work'], $object['object']['passport'], $object['object']['code'], $object['object']['other'], $object['object']['source'], $object['object']['created_at'], $object['object']['updated_at']));
+                }
             });
         })->export('xlsx');
     }

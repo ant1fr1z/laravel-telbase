@@ -60,3 +60,4 @@ $("a#dellink").on("click", function(e) {
         }
     });
 });
+

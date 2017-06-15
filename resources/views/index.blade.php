@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-    БД -> Главная
+    БД -> Головна
 @endsection
 
 @section('content')

@@ -1,20 +1,39 @@
 @extends('layouts.main')
 
 @section('title')
-    БД -> Пошук по списку
+    БД -> Пошук по об'єкту
 @endsection
 
 @section('content')
     <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <form class="form-horizontal" action="{{ route('objects.list') }}" method="POST">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <form class="form-horizontal" action="{{ route('objects.searchobject') }}" method="POST">
                 <div class="form-group">
-                    <label for="inputList" class="col-md-2 control-label">Список</label>
+                    <label for="inputFio" class="col-md-2 control-label">ФІО/Кличка</label>
                     <div class="col-md-10">
-                        <textarea class="form-control" rows="7" name="inputList" id="inputList"
-                                  placeholder="Не більше 10000 рядків">{{ Request::old('inputList') }}</textarea>
+                        <input type="text" class="form-control" name="inputFio" id="inputFio" placeholder="ФІО/Кличка" value="">
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress" class="col-sm-2 control-label">Адреса</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="inputAddress" id="inputAddress" placeholder="Адреса" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputWork" class="col-sm-2 control-label">Робота</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="inputWork" id="inputWork" placeholder="Робота" value="">
+                    </div>
+                </div>
+                <div class="form-group inline">
+                    <label for="exampleInputName2">Name</label>
+                    <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+                </div>
+                <div class="form-group inline">
+                    <label for="exampleInputEmail2">Email</label>
+                    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-5 col-md-2">
@@ -24,7 +43,7 @@
                 <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
             </form>
         </div><!-- /.col-md-4 -->
-        <div class="col-md-4"></div>
+        <div class="col-md-3"></div>
     </div>
     <div class="row">
         @if (count($errors) > 0)

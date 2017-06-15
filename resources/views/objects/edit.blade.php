@@ -96,8 +96,7 @@
                 <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
             </form>
         </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-3">
+        <div class="col-md-offset-2 col-md-3">
             <h3>Вторые номера</h3>
             <form action="{{ route('objects.addnumber', ['object_id' => $object->id]) }}" method="POST">
             <div class="input-group">
@@ -132,8 +131,8 @@
                         </tr>
                         @endforeach
                     @endif
-            @endif
-            </table>
+                </table>
+                @endif
         </div>
     </div>
 @endsection

@@ -37,21 +37,21 @@ Route::get('/{number_id}/create', [
 ]);
 
 //поиск по списку
-Route::get('/list', [
+Route::match(['get', 'post'],'/list', [
     'uses' => 'ObjectsController@searchlist',
     'as'=> 'objects.list'
 ]);
 
-//поиск по списку
-Route::post('/list', [
-    'uses' => 'ObjectsController@searchlist',
-    'as'=> 'objects.list'
+//поиск по обєкту
+Route::match(['get', 'post'],'/searchobject', [
+    'uses' => 'ObjectsController@searchobject',
+    'as'=> 'objects.searchobject'
 ]);
 
 //експорт в excel
-Route::get('/getexcel/{data}', [
-    'uses' => 'ObjectsController@getexcel',
-    'as'=> 'objects.getexcel'
+Route::post('/getexcelfromlist', [
+    'uses' => 'ObjectsController@getexcelfromlist',
+    'as'=> 'objects.getexcelfromlist'
 ]);
 
 //запрос на сохранение объекта
