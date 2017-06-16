@@ -265,6 +265,11 @@ class ObjectsController extends Controller
 
     public function searchobject(Request $request)
     {
+        if ($request->isMethod('post')) {
+            //$objects = DB::table('objects')->whereRaw('MATCH fio AGAINST (\'"очкур"\')')->get();
+            $objects = Object::with('numbers')->whereRaw('MATCH (fio,address) AGAINST (\'+'.$request['inputFio'].' +'.$request['inputAddress'].'\' IN BOOLEAN MODE)')->get();
+            dd($objects);
+        }
         return view('objects.searchobject');
     }
 
