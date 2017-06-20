@@ -158,13 +158,6 @@ class ObjectsController extends Controller
         }
     }
 
-    public function delnumber($object_id, $number_id)
-    {
-        $number = Number::findOrFail($number_id);
-        $number->object()->dissociate()->save();
-        return redirect()->back();
-    }
-
     /**
      * Remove the specified resource from storage.
      *
