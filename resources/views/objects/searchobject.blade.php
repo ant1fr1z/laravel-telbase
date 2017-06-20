@@ -11,19 +11,19 @@
                 <div class="form-group">
                     <label for="inputFio" class="col-xs-2 control-label">ФІО/Кличка</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" name="inputFio" id="inputFio" placeholder="ФІО/Кличка" value="">
+                        <input type="text" class="form-control" name="inputFio" id="inputFio" placeholder="ФІО/Кличка" value="{{ Request::old('inputFio') }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputAddress" class="col-xs-2 control-label">Адреса</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputAddress" id="inputAddress" placeholder="Адреса" value="">
+                        <input type="text" class="form-control" name="inputAddress" id="inputAddress" placeholder="Адреса" value="{{ Request::old('inputAddress') }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputWork" class="col-xs-2 control-label">Робота</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputWork" id="inputWork" placeholder="Робота" value="">
+                        <input type="text" class="form-control" name="inputWork" id="inputWork" placeholder="Робота" value="{{ Request::old('inputWork') }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -38,19 +38,19 @@
                 <div class="form-group">
                     <label for="inputPassport" class="col-xs-2 control-label">Паспорт</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputPassport" id="inputPassport" placeholder="Паспорт" value="">
+                        <input type="text" class="form-control" name="inputPassport" id="inputPassport" placeholder="Паспорт" value="{{ Request::old('inputPassport') }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputCode" class="col-xs-2 control-label">Ід. код</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputCode" id="inputCode" placeholder="Ід. код" value="">
+                        <input type="text" class="form-control" name="inputCode" id="inputCode" placeholder="Ід. код" value="{{ Request::old('inputCode') }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputSource" class="col-xs-2 control-label">Джерело</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputSource" id="inputSource" placeholder="Джерело" value="">
+                        <input type="text" class="form-control" name="inputSource" id="inputSource" placeholder="Джерело" value="{{ Request::old('inputSource') }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -80,10 +80,10 @@
                         <h4>Виведено {{ $objects->count() }} із {{ $objects->total() }} знайдених записів</h4>
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
                             <div class="btn-group" role="group">
-                                <form action="{{ route('objects.getexcelfromlist') }}" method="POST">
-                                    <button type="submit" class="btn btn-default" id="getexcelfromlist">Експортувати до Excel</button>
+                                <form action="{{ route('objects.getexcelfromobjects') }}" method="POST">
+                                    <button type="submit" class="btn btn-default" id="getexcelfromobjects">Експортувати до Excel</button>
                                     <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
-                                    <input type="text" name="numberList" value="{{ json_encode($numberList) }}" hidden>
+                                    <input type="text" name="queryList" value="{{ json_encode($_REQUEST) }}" hidden>
                                 </form>
                             </div>
                             <div class="btn-group" role="group">
@@ -107,15 +107,20 @@
                             </tr>
                             @foreach( $objects as $object)
                                 <tr>
-                                    <td>{{ $object->number }}</td>
-                                    <td>{{ $object->object->fio }}</td>
-                                    <td>{{ $object->object->address }}</td>
+                                    <td>{{ $object->numbers->implode('number', ', ') }}</td>
+                                    <td>{{ $object->fio }}</td>
+                                    <td>{{ $object->address }}</td>
                                     <td>
-                                        <a href="{{ route('objects.edit', ['object_id' => $object->object->id]) }}">Ред</a>
+                                        <a href="{{ route('objects.edit', ['object_id' => $object->id]) }}">Ред</a>
                                     </td>
                                 </tr>
                             @endforeach
                         </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ $objects->links() }}
                     </div>
                 </div>
     @endif
@@ -123,6 +128,6 @@
 
             <script>
                 var token = '{{ Session::token() }}';
-                var url = '{{ route('objects.getexcelfromlist') }}';
+                var url = '{{ route('objects.getexcelfromobjects') }}';
             </script>
 @endsection

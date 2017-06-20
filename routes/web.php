@@ -53,6 +53,11 @@ Route::post('/getexcelfromlist', [
     'uses' => 'ObjectsController@getexcelfromlist',
     'as'=> 'objects.getexcelfromlist'
 ]);
+//експорт в excel
+Route::post('/getexcelfromobjects', [
+    'uses' => 'ObjectsController@getexcelfromobjects',
+    'as'=> 'objects.getexcelfromobjects'
+]);
 
 //запрос на сохранение объекта
 Route::post('/{number_id}/create', [

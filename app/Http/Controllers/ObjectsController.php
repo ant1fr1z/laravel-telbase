@@ -265,10 +265,13 @@ class ObjectsController extends Controller
 
     public function searchobject(Request $request)
     {
-        if ($request->isMethod('post')) {
-            //$objects = DB::table('objects')->whereRaw('MATCH fio AGAINST (\'"очкур"\')')->get();
-            $objects = Object::with('numbers')->whereRaw('MATCH (fio,address) AGAINST (\'+'.$request['inputFio'].' +'.$request['inputAddress'].'\' IN BOOLEAN MODE)')->get();
-            dd($objects);
+        if ( isset($request->inputFio) || isset($request->inputAddress) || isset($request->inputWork) || isset($request->inputPassport) || isset($request->inputCode) || isset($request->inputSource) ) {
+            $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) REGEXP "'.$request['inputFio'].'" AND IFNULL(address, 0) REGEXP "'.$request['inputAddress'].'" AND IFNULL(work,0) REGEXP "'.$request['inputWork'].'" AND IFNULL(passport,0) REGEXP "'.$request['inputPassport'].'" AND IFNULL(code,0) REGEXP"'.$request['inputCode'].'" AND IFNULL(source,0) REGEXP "'.$request['inputSource'].'"')->Paginate(500)->appends($_REQUEST);
+            if ($objects->count() >0) {
+                return view('objects.searchobject', compact( 'objects'));
+            } else {
+                return view('objects.searchobject')->withErrors(['messages' => 'Нічого не знайдено!']);
+            }
         }
         return view('objects.searchobject');
     }
@@ -290,6 +293,29 @@ class ObjectsController extends Controller
                 });
                 foreach ($objects as $object) {
                     $sheet->appendRow(array($object['number'], $object['object']['fio'], $object['object']['birthday'], $object['object']['address'], $object['object']['work'], $object['object']['passport'], $object['object']['code'], $object['object']['other'], $object['object']['source'], $object['object']['created_at'], $object['object']['updated_at']));
+                }
+            });
+        })->export('xlsx');
+    }
+
+    public function getexcelfromobjects(Request $request)
+    {
+        $query = json_decode($request->queryList);
+        $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) REGEXP "'.$query->inputFio.'" AND IFNULL(address, 0) REGEXP "'.$query->inputAddress.'" AND IFNULL(work,0) REGEXP "'.$query->inputWork.'" AND IFNULL(passport,0) REGEXP "'.$query->inputPassport.'" AND IFNULL(code,0) REGEXP"'.$query->inputCode.'" AND IFNULL(source,0) REGEXP "'.$query->inputSource.'"')->get();
+
+        Excel::create('pol_'.time().'', function($excel) use($objects) {
+            $excel->sheet('Список телефонів', function($sheet) use($objects) {
+                $sheet->setOrientation('landscape');
+                $sheet->row(1, array('Ідентифікатор', 'ФІО', 'Дата народження', 'Адреса', 'Робота', 'Паспорт', 'Ід.код', 'Інше', 'Джерело', 'Додано', 'Оновлено'));
+                $sheet->row(1, function($row) {
+
+                    $row->setBackground('#D3D3D3');
+                    $row->setFontSize(12);
+                    $row->setFontWeight('bold');
+
+                });
+                foreach ($objects as $object) {
+                    $sheet->appendRow(array($object->numbers->implode('number', ', '), $object['fio'], $object['birthday'], $object['address'], $object['work'], $object['passport'], $object['code'], $object['other'], $object['source'], $object['created_at'], $object['updated_at']));
                 }
             });
         })->export('xlsx');
