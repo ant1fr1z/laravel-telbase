@@ -69,6 +69,11 @@ Route::get('/{object_id}/edit', [
     'uses' => 'ObjectsController@edit',
     'as'=> 'objects.edit'
 ]);
+//страница истории имеи-имси
+Route::get('/{object_id}/history', [
+    'uses' => 'ObjectsController@history',
+    'as'=> 'objects.history'
+]);
 //страница редактирования объекта
 Route::post('/{object_id}/edit', [
     'uses' => 'ObjectsController@update',

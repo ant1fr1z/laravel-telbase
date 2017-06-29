@@ -109,6 +109,18 @@ class ObjectsController extends Controller
 
     }
 
+    public function history($object_id)
+    {
+        $object = Object::with('numbers')->find($object_id);
+        foreach ($object->numbers as $number) {
+            $history = DB::connection('traffic')->table('traffic_line')->select('numbera', 'imsi', 'imei', 'starttime')->where('numbera', $number->number)->get();
+            $imei = $history->unique('imei')->values();
+            dd($imei);
+        }
+        return view('objects.history', compact('object'));
+
+    }
+
     /**
      * Update the specified resource in storage.
      *

@@ -9,6 +9,7 @@
         <ul class="nav nav-tabs">
             <li role="presentation"><a href="{{ route('objects.edit', ['$object_id' => $object->id]) }}">Объект</a></li>
             <li role="presentation" class="active"><a href="#">Связи</a></li>
+            <li role="presentation"><a href="{{ route('objects.history', ['object_id' => $object->id]) }}">История</a></li>
             <li role="presentation"><a href="#">База "Р"</a></li>
         </ul>
     </tabs>
