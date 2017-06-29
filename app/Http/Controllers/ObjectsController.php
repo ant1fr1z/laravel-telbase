@@ -106,18 +106,38 @@ class ObjectsController extends Controller
     {
         $object = Object::find($object_id);
         return view('objects.edit', compact('object'));
-
     }
 
     public function history($object_id)
     {
         $object = Object::with('numbers')->find($object_id);
-        foreach ($object->numbers as $number) {
-            $history = DB::connection('traffic')->table('traffic_line')->select('numbera', 'imsi', 'imei', 'starttime')->where('numbera', $number->number)->get();
-            $imei = $history->unique('imei')->values();
-            dd($imei);
+        $history = collect();
+        foreach ($object->numbers as $number)
+        {
+            $traffic = DB::connection('traffic')->table('traffic_line')->select('numbera', 'imsi', 'imei', 'starttime')->where('numbera', $number->number)->get();
+            if (!$traffic->isEmpty())
+            {
+                $uniqueimeis = $traffic->unique('imei')->filter(function ($value, $key) {
+                    return $value->imei;
+                })->values();
+
+                foreach ($uniqueimeis as $item)
+                {
+                    $item->min = $traffic->where('imei', $item->imei)->min('starttime');
+                    $item->max = $traffic->where('imei', $item->imei)->max('starttime');
+                }
+
+                $history->push($uniqueimeis);
+            }
         }
-        return view('objects.history', compact('object'));
+        $history = $history->flatten();
+        if ($history->count() > 0)
+        {
+            return view('objects.history', compact('object', 'history'));
+
+        } else {
+            return view('objects.history', compact('object', 'history'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному номеру.']);
+        }
 
     }
 
