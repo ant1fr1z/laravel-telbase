@@ -31,22 +31,14 @@ class NumbersController extends Controller
         })->export('xlsx');
         /**
         $number = new Number();
-        $number->number = '380666272599';
+        $number->number = '380666272555';
         $number->save();
         $number = new Number();
-        $number->number = '380666272552';
+        $number->number = '380666272556';
         $number->save();
         $number = new Number();
-        $number->number = '380666272551';
+        $number->number = '380666272557';
         $number->save();
-
-        $object2number = Number::with('object')->where('number','380666272592')->first();
-        if (!empty($object2number))
-        {
-            dd($object2number);
-        } else {
-            dd('pusto');
-        }
          */
     }
 

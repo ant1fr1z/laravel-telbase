@@ -190,15 +190,26 @@ class ObjectsController extends Controller
         }
     }
 
+    public function delnumber($object_id, $number_id)
+    {
+        $number = Number::findOrFail($number_id);
+        $number->object()->dissociate()->save();
+        return redirect()->back();
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($object_id)
     {
-        //
+        $object = Object::findOrFail($object_id);
+        $object->numbers->each(function ($item, $key) {
+            $item->object()->dissociate()->save();
+        });
+        $object->delete();
     }
 
     /**

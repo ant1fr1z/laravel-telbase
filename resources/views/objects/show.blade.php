@@ -78,7 +78,7 @@
             <h3>Действия</h3>
             <div class="list-group">
                 <a href="{{ route('objects.edit', ['object_id' => $number->object->id]) }}" class="list-group-item">Редактировать</a>
-                <a href="#" class="list-group-item">Удалить</a>
+                <a href="{{ route('objects.destroy', ['object_id' => $number->object->id]) }}" class="list-group-item">Удалить</a>
             </div>
         </div>
     </div>

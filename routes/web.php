@@ -79,6 +79,11 @@ Route::post('/{object_id}/edit', [
     'uses' => 'ObjectsController@update',
     'as'=> 'objects.update'
 ]);
+//страница уничтожения объекта
+Route::get('/{object_id}/destroy', [
+    'uses' => 'ObjectsController@destroy',
+    'as'=> 'objects.destroy'
+]);
 //добавление номера к объекту
 Route::post('/{object_id}/addnumber', [
     'uses' => 'ObjectsController@addnumber',
