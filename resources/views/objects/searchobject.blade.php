@@ -27,15 +27,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                        <label for="inputBirthDay" class="col-xs-2 control-label">Дата народження</label>
-                    <div class="col-xs-5">
-                        <input type="text" class="form-control" name="inputBirthDay1" id="inputBirthDay1" placeholder="з">
-                    </div>
-                    <div class="col-xs-5">
-                        <input type="text" class="form-control" name="inputBirthDay2" id="inputBirthDay2" placeholder="по">
-                    </div>
-                </div>
-                <div class="form-group">
                     <label for="inputPassport" class="col-xs-2 control-label">Паспорт</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="inputPassport" id="inputPassport" placeholder="Паспорт" value="{{ Request::old('inputPassport') }}">
@@ -51,6 +42,15 @@
                     <label for="inputSource" class="col-xs-2 control-label">Джерело</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="inputSource" id="inputSource" placeholder="Джерело" value="{{ Request::old('inputSource') }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputBirthDay" class="col-xs-2 control-label">Дата оновлення</label>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control" name="inputBirthDay1" id="inputBirthDay1" placeholder="з">
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control" name="inputBirthDay2" id="inputBirthDay2" placeholder="по">
                     </div>
                 </div>
                 <div class="form-group">

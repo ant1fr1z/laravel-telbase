@@ -78,7 +78,7 @@ class ObjectsController extends Controller
     {
         $error_messages = [
             'inputNumber.required' => 'Поле не може бути пустим!',
-            'inputNumber.exists' => 'Помилка, швидше зовіть адміністратора!',
+            'inputNumber.exists' => 'Помилка, швидше кличте адміністратора!',
         ];
 
         $this->validate($request, [
@@ -177,7 +177,7 @@ class ObjectsController extends Controller
 
         //dd($number);
         if (empty($number)) {
-            return redirect()->back()->withErrors(['message' => 'Помилка, швидше зовіть адміністратора!']);
+            return redirect()->back()->withErrors(['message' => 'Помилка, швидше кличте адміністратора!']);
         } else {
 
             if (!is_null($number->object)) {
@@ -209,7 +209,11 @@ class ObjectsController extends Controller
         $object->numbers->each(function ($item, $key) {
             $item->object()->dissociate()->save();
         });
+
+        Link::where('object1', $object_id)->orWhere('object2', $object_id)->delete();
         $object->delete();
+
+        return redirect()->route('index');
     }
 
     /**
@@ -240,9 +244,9 @@ class ObjectsController extends Controller
     public function linkModal(Request $request)
     {
         $error_messages = [
-            'object2number.required' => 'Поле "Объект 2" не может быть пустым!',
-            'object2number.exists' => 'Внутренняя ошибка, срочно зовите администратора!',
-            'description.required' => 'Описание связи не может быть пустым!',
+            'object2number.required' => 'Поле "Об\'єкт 2" не може бути порожнім!',
+            'object2number.exists' => 'Помилка, швидше кличте адміністратора!',
+            'description.required' => 'Опис зв\'язку не може бути порожнім!',
         ];
 
         $this->validate($request, [

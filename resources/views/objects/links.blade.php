@@ -1,15 +1,15 @@
 @extends('layouts.main')
 
 @section('title')
-    БД -> Связи объекта
+    БД -> Зв'язки об'єкта
 @endsection
 
 @section('content')
     <tabs>
         <ul class="nav nav-tabs">
-            <li role="presentation"><a href="{{ route('objects.edit', ['$object_id' => $object->id]) }}">Объект</a></li>
-            <li role="presentation" class="active"><a href="#">Связи</a></li>
-            <li role="presentation"><a href="{{ route('objects.history', ['object_id' => $object->id]) }}">История</a></li>
+            <li role="presentation"><a href="{{ route('objects.edit', ['$object_id' => $object->id]) }}">Об'єкт</a></li>
+            <li role="presentation" class="active"><a href="#">Зв'язки</a></li>
+            <li role="presentation"><a href="{{ route('objects.history', ['object_id' => $object->id]) }}">Історія</a></li>
             <li role="presentation"><a href="#">База "Р"</a></li>
         </ul>
     </tabs>
@@ -20,12 +20,12 @@
             <div class="col-md-12">
                 <table class="table table-hover">
                     <tr>
-                        <th>Объект 1</th>
+                        <th>Об'єкт 1</th>
                         <th>Тип</th>
-                        <th>Объект 2</th>
-                        <th>Описание</th>
-                        <th>Добавлено</th>
-                        <th>Удалить</th>
+                        <th>Об'єкт 2</th>
+                        <th>Опис зв'язку</th>
+                        <th>Додано</th>
+                        <th>Видалити</th>
                     </tr>
                     @foreach($objectLinks as $objectLink)
                         <tr>
@@ -50,11 +50,11 @@
     </div>
     <form action="" method="POST">
         <div class="row">
-            <h3>Добавить связь</h3>
+            <h3>Додати зв'язок</h3>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="inputObject1">Объект 1</label>
-                    <input type="text" class="form-control" name="inputObject1" id="inputObject1" placeholder="Объект 1"
+                    <label for="inputObject1">Об'єкт 1</label>
+                    <input type="text" class="form-control" name="inputObject1" id="inputObject1" placeholder="Об'єкт 1"
                            value="{{ $object->fio }}" readonly>
                 </div>
             </div>
@@ -70,23 +70,23 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="inputObject2">Объект 2</label>
-                    <input type="text" class="form-control" name="inputObject2" id="inputObject2" placeholder="Объект 2"
+                    <label for="inputObject2">Об'єкт 2</label>
+                    <input type="text" class="form-control" name="inputObject2" id="inputObject2" placeholder="Об'єкт 2"
                            value="">
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="form-group">
-                    <label for="inputDescription">Описание связи</label>
+                    <label for="inputDescription">Опис зв'язку</label>
                     <textarea class="form-control" rows="3" name="inputDescription" id="inputDescription"
-                              placeholder="Описание связи"></textarea>
+                              placeholder="Опис зв'язку"></textarea>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-offset-5 col-md-2">
                 <div class="form-group">
-                    <button type="button" class="btn btn-default" id="checklink">Создать</button>
+                    <button type="button" class="btn btn-default" id="checklink">Створити</button>
                 </div>
                 <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
             </div>
@@ -99,15 +99,15 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Найден следующий объект. Добавить связь?</h4>
+                    <h4 class="modal-title">Знайдено наступний об'єкт. Додати зв'язок?</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table table-hover" id="table-modal">
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary" id="addlink">Да</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Відмінити</button>
+                    <button type="button" class="btn btn-primary" id="addlink">Так</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

@@ -1,15 +1,15 @@
 @extends('layouts.main')
 
 @section('title')
-    БД -> Редактировать объект
+    БД -> Редагувати об'єкт
 @endsection
 
 @section('content')
     <tabs>
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="#">Объект</a></li>
-            <li role="presentation"><a href="{{ route('objects.links', ['object_id' => $object->id]) }}">Связи</a></li>
-            <li role="presentation"><a href="{{ route('objects.history', ['object_id' => $object->id]) }}">История</a></li>
+            <li role="presentation" class="active"><a href="#">Об'єкт</a></li>
+            <li role="presentation"><a href="{{ route('objects.links', ['object_id' => $object->id]) }}">Зв'язки</a></li>
+            <li role="presentation"><a href="{{ route('objects.history', ['object_id' => $object->id]) }}">Історія</a></li>
             <li role="presentation"><a href="#">База "Р"</a></li>
         </ul>
     </tabs>
@@ -27,7 +27,7 @@
     </div>
     <div class="row">
         <div class="col-md-7">
-            <h3>Редактировать объект</h3>
+            <h3>Редагувати об'єкт</h3>
             <form class="form-horizontal" action="{{ route('objects.update', ['object_id' => $object->id]) }}" method="POST">
                 <div class="form-group">
                     <label for="inputFio" class="col-sm-2 control-label">ФИО/Кличка</label>
@@ -98,10 +98,10 @@
             </form>
         </div>
         <div class="col-md-offset-2 col-md-3">
-            <h3>Вторые номера</h3>
+            <h3>Додаткові номера</h3>
             <form action="{{ route('objects.addnumber', ['object_id' => $object->id]) }}" method="POST">
             <div class="input-group">
-                <input type="text" class="form-control" name="inputAddNumber" id="inputAddNumber" placeholder="Введите номер..." value="{{ Request::old('inputAddNumber') }}" >
+                <input type="text" class="form-control" name="inputAddNumber" id="inputAddNumber" placeholder="Введіть номер..." value="{{ Request::old('inputAddNumber') }}" >
                   <span class="input-group-btn">
                       <button type="submit" class="btn btn-default" type="button">+</button>
                   </span>
@@ -134,6 +134,13 @@
                     @endif
                 </table>
                 @endif
+        </div>
+        <div class="col-md-offset-2 col-md-3">
+            <h3>Дії</h3>
+            <div class="list-group">
+                <a href="" class="list-group-item">Експортувати до Excel</a>
+                <a href="{{ route('objects.destroy', ['object_id' => $object->id]) }}" class="list-group-item" id="delobject">Видалити</a>
+            </div>
         </div>
     </div>
 @endsection

@@ -8,7 +8,7 @@ $('button#checklink').on('click', function () {
         success: function(data){
             var object2id = data.number2.object.id;
             $('div#errors').hide();
-            $('table#table-modal').empty().append('<tr><th>Тип связи</th><th>Номер</th><th>ФИО/Кличка</th><th>Обновлено</th></tr><tr><td>'+$('select#inputLinkType').val()+'</td><td>'+data.number2.number+'</td><td>'+data.number2.object.fio+'</td><td>'+data.number2.object.updated_at+'</td></tr>');
+            $('table#table-modal').empty().append('<tr><th>Тип зв\'язку</th><th>Номер</th><th>ФІО/Кличка</th><th>Оновлено</th></tr><tr><td>'+$('select#inputLinkType').val()+'</td><td>'+data.number2.number+'</td><td>'+data.number2.object.fio+'</td><td>'+data.number2.object.updated_at+'</td></tr>');
             $('#addlink-modal').modal();
 
             $('#addlink-modal').on('hidden.bs.modal', function () {
@@ -48,13 +48,32 @@ $("a#dellink").on("click", function(e) {
 
     e.preventDefault();
 
-    $("<div>Точно удалить эту связь?</div>").dialog({
+    $("<div>Видалити данний зв'язок?</div>").dialog({
         modal: true,
         buttons: {
-            "Да": function() {
+            "Так": function() {
                 window.location = link.href;
             },
-            "Отмена": function() {
+            "Відмінити": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+});
+
+//диалог при удалении объекта
+$("a#delobject").on("click", function(e) {
+    var link = this;
+
+    e.preventDefault();
+
+    $("<div>Видалити об'єкт зі всіми зв'язками?</div>").dialog({
+        modal: true,
+        buttons: {
+            "Так": function() {
+                window.location = link.href;
+            },
+            "Відмінити": function() {
                 $(this).dialog("close");
             }
         }
