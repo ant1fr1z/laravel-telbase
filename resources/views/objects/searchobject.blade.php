@@ -45,12 +45,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputBirthDay" class="col-xs-2 control-label">Дата оновлення</label>
+                    <label for="inputUpdatedAt" class="col-xs-2 control-label">Дата оновлення</label>
                     <div class="col-xs-5">
-                        <input type="text" class="form-control" name="inputBirthDay1" id="inputBirthDay1" placeholder="з">
+                        <input type="text" class="form-control" name="inputUpdatedAt1" id="inputUpdatedAt1" placeholder="з">
                     </div>
                     <div class="col-xs-5">
-                        <input type="text" class="form-control" name="inputBirthDay2" id="inputBirthDay2" placeholder="по">
+                        <input type="text" class="form-control" name="inputUpdatedAt2" id="inputUpdatedAt2" placeholder="по">
                     </div>
                 </div>
                 <div class="form-group">
@@ -131,3 +131,22 @@
                 var url = '{{ route('objects.getexcelfromobjects') }}';
             </script>
 @endsection
+
+@push('scripts')
+            <script>
+                $(function() {
+                    $( "#inputUpdatedAt1" ).datepicker({
+                        dateFormat: "yy-mm-dd",
+                        changeYear: true,
+                        yearRange: "2015:2017",
+                        changeMonth: true
+                    });
+                    $( "#inputUpdatedAt2" ).datepicker({
+                        dateFormat: "yy-mm-dd",
+                        changeYear: true,
+                        yearRange: "2015:2017",
+                        changeMonth: true
+                    });
+                });
+            </script>
+@endpush

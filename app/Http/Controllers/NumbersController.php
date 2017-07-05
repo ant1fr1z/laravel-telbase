@@ -16,20 +16,6 @@ class NumbersController extends Controller
      */
     public function index()
     {
-        $data = 'TEST';
-        Excel::create('pol_'.time().'', function($excel) use($data) {
-            $excel->sheet('Список телефонов', function($sheet) use($data) {
-                $sheet->setOrientation('landscape');
-
-                $sheet->cell('A1', function($cell) use($data) {
-
-                    $cell->setValue($data);
-
-                });
-
-            });
-        })->export('xlsx');
-        /**
         $number = new Number();
         $number->number = '380666272555';
         $number->save();
@@ -39,7 +25,6 @@ class NumbersController extends Controller
         $number = new Number();
         $number->number = '380666272557';
         $number->save();
-         */
     }
 
     /**

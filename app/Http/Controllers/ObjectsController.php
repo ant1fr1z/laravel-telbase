@@ -305,8 +305,16 @@ class ObjectsController extends Controller
 
     public function searchobject(Request $request)
     {
-        if ( isset($request->inputFio) || isset($request->inputAddress) || isset($request->inputWork) || isset($request->inputPassport) || isset($request->inputCode) || isset($request->inputSource) ) {
-            $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) REGEXP "'.$request['inputFio'].'" AND IFNULL(address, 0) REGEXP "'.$request['inputAddress'].'" AND IFNULL(work,0) REGEXP "'.$request['inputWork'].'" AND IFNULL(passport,0) REGEXP "'.$request['inputPassport'].'" AND IFNULL(code,0) REGEXP"'.$request['inputCode'].'" AND IFNULL(source,0) REGEXP "'.$request['inputSource'].'"')->Paginate(500)->appends($_REQUEST);
+        if ( isset($request->inputFio) || isset($request->inputAddress) || isset($request->inputWork) || isset($request->inputPassport) || isset($request->inputCode) || isset($request->inputSource) || isset($request->inputUpdatedAt1) && isset($request->inputUpdatedAt2) ) {
+            if ( isset($request->inputUpdatedAt1) && isset($request->inputUpdatedAt2) )
+            {
+                $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) REGEXP "'.$request['inputFio'].'" AND IFNULL(address, 0) REGEXP "'.$request['inputAddress'].'" AND IFNULL(work,0) REGEXP "'.$request['inputWork'].'" AND IFNULL(passport,0) REGEXP "'.$request['inputPassport'].'" AND IFNULL(code,0) REGEXP "'.$request['inputCode'].'" AND IFNULL(source,0) REGEXP "'.$request['inputSource'].'"')->whereBetween('updated_at', [$request['inputUpdatedAt1'], $request['inputUpdatedAt2']])->Paginate(500)->appends($_REQUEST);
+            }
+            else
+            {
+                $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) REGEXP "'.$request['inputFio'].'" AND IFNULL(address, 0) REGEXP "'.$request['inputAddress'].'" AND IFNULL(work,0) REGEXP "'.$request['inputWork'].'" AND IFNULL(passport,0) REGEXP "'.$request['inputPassport'].'" AND IFNULL(code,0) REGEXP "'.$request['inputCode'].'" AND IFNULL(source,0) REGEXP "'.$request['inputSource'].'"')->Paginate(500)->appends($_REQUEST);
+            }
+            $request->flash();
             if ($objects->count() >0) {
                 return view('objects.searchobject', compact( 'objects'));
             } else {
