@@ -28,26 +28,9 @@
     @if($history->count() > 0)
     <div class="row">
         <div class="col-md-12">
-            <h4>Знайдено {{ $history->count() }} записів</h4>
-            <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                    <form action="" method="POST">
-                        <button type="submit" class="btn btn-default" id="getexcelfromlist">Експортувати до Excel
-                        </button>
-                        <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
-                        <input type="text" name="numberList" value="" hidden>
-                    </form>
-                </div>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default" disabled="disabled">&nbsp;</button>
-                </div>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default" disabled="disabled">&nbsp;</button>
-                </div>
-            </div>
+            <h4>Знайдено {{ $history->count() }} запис(-ів)</h4>
         </div>
     </div>
-    <br>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover">

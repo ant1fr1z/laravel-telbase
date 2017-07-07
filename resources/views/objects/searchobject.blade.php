@@ -73,6 +73,7 @@
                 </ul>
             </div>
         @endif
+    </div>
         @if (isset($objects))
             @if ($objects->count() > 0)
                 <div class="row">

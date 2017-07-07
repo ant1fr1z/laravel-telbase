@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Link;
+use App\Log;
 use App\Number;
 use App\Object;
 use Illuminate\Http\Request;
@@ -157,6 +158,7 @@ class ObjectsController extends Controller
         ]);
 
         $object = Object::findOrFail($object_id);
+        $old = $object;
         $object->fio = $request['inputFio'];
         $object->birthday = $request['inputBirthDay'];
         $object->address = $request['inputAddress'];
@@ -165,10 +167,19 @@ class ObjectsController extends Controller
         $object->code = $request['inputCode'];
         $object->other = $request['inputOther'];
         $object->source = $request['inputSource'];
+        $new = $object;
         $object->save();
 
-        return redirect()->back();
+        //логгирование изменений объекта базы
+        $log = new Log();
+        $log->old = $old;
+        $log->new = $new;
+        $log->action = 'update';
+        $log->ip = $_SERVER['REMOTE_ADDR'];
+        $log->object()->associate($object)->save();
+        //конец логгирования
 
+        return redirect()->back();
     }
 
     public function addnumber(Request $request, $object_id)
@@ -206,6 +217,15 @@ class ObjectsController extends Controller
     public function destroy($object_id)
     {
         $object = Object::findOrFail($object_id);
+
+        //логгирование удаления объекта из базы
+        $log = new Log();
+        $log->old = $object;
+        $log->action = 'delete';
+        $log->ip = $_SERVER['REMOTE_ADDR'];
+        $log->object()->associate($object)->save();
+        //конец логгирования
+
         $object->numbers->each(function ($item, $key) {
             $item->object()->dissociate()->save();
         });
@@ -219,7 +239,7 @@ class ObjectsController extends Controller
     /**
      * Страничка связей объекта
      *
-     * @param  int $id
+     * @param  int $object_id
      * @return \Illuminate\Http\Response
      */
     public function links($object_id)
@@ -367,5 +387,21 @@ class ObjectsController extends Controller
                 }
             });
         })->export('xlsx');
+    }
+
+    /**
+     * Страничка с логом изменений базы
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getLog()
+    {
+        $logs = Log::orderBy('created_at', 'desc')->paginate(5);
+        foreach ($logs as $log) {
+            $log['old'] = json_decode($log->old, true);
+            //dd($log);
+        }
+        //dd($logs);
+        return view('objects.log', compact('logs'));
     }
 }

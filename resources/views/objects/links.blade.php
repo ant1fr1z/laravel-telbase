@@ -13,7 +13,6 @@
             <li role="presentation"><a href="#">База "Р"</a></li>
         </ul>
     </tabs>
-    <br>
     @if(!$objectLinks->isEmpty())
         <div class="row">
             <h3>Текущие связи</h3>

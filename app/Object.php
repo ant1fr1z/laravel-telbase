@@ -13,4 +13,9 @@ class Object extends Model
     {
         return $this->hasMany('App\Number');
     }
+
+    public function logs()
+    {
+        return $this->hasMany('App\Log');
+    }
 }

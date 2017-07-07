@@ -118,3 +118,9 @@ Route::get('/{link_id}/delete', [
     'uses' => 'ObjectsController@delLink',
     'as'=> 'objects.delLink'
 ]);
+
+//отображение страницы лога изменений базы
+Route::get('/log', [
+    'uses' => 'ObjectsController@getLog',
+    'as'=> 'objects.getLog'
+]);
