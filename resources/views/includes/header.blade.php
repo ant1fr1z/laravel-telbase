@@ -26,16 +26,45 @@
                             <li><a href="{{ route('objects.imeiimsi') }}">IMEI-IMSI</a></li>
                         </ul>
                     </li>
+                    @if (Auth::check())
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Адміністрування<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="">Создать объект</a></li>
+                                    <li><a href="{{ route('objects.getLog') }}">Лог</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="">Управление группами</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="">Регистрация пользователя</a></li>
                                 </ul>
                             </li>
+                    @endif
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Authentication Links -->
+                    @if (Auth::guest())
+                        <li><a href="{{ route('login') }}">Увійти</a></li>
+                    @else
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        Вийти
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

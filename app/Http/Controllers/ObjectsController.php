@@ -7,6 +7,7 @@ use App\Log;
 use App\Number;
 use App\Object;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -396,12 +397,15 @@ class ObjectsController extends Controller
      */
     public function getLog()
     {
-        $logs = Log::orderBy('created_at', 'desc')->paginate(5);
-        foreach ($logs as $log) {
-            $log['old'] = json_decode($log->old, true);
-            $log['new'] = json_decode($log->new, true);
+        if (Auth::check()) {
+            $logs = Log::orderBy('created_at', 'desc')->paginate(5);
+            foreach ($logs as $log) {
+                $log['old'] = json_decode($log->old, true);
+                $log['new'] = json_decode($log->new, true);
+            }
+            return view('objects.log', compact('logs'));
         }
-        return view('objects.log', compact('logs'));
+        return redirect('/login');
     }
 
     /**
