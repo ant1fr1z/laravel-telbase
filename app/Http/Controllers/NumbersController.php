@@ -17,13 +17,13 @@ class NumbersController extends Controller
     public function index()
     {
         $number = new Number();
+        $number->number = '380666272599';
+        $number->save();
+        $number = new Number();
+        $number->number = '380666272552';
+        $number->save();
+        $number = new Number();
         $number->number = '380666272555';
-        $number->save();
-        $number = new Number();
-        $number->number = '380666272556';
-        $number->save();
-        $number = new Number();
-        $number->number = '380666272557';
         $number->save();
     }
 

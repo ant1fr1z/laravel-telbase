@@ -158,7 +158,7 @@ class ObjectsController extends Controller
         ]);
 
         $object = Object::findOrFail($object_id);
-        $old = $object;
+        $old = $object->replicate();
         $object->fio = $request['inputFio'];
         $object->birthday = $request['inputBirthDay'];
         $object->address = $request['inputAddress'];
@@ -167,8 +167,8 @@ class ObjectsController extends Controller
         $object->code = $request['inputCode'];
         $object->other = $request['inputOther'];
         $object->source = $request['inputSource'];
-        $new = $object;
         $object->save();
+        $new = $object->replicate();
 
         //логгирование изменений объекта базы
         $log = new Log();
@@ -409,8 +409,96 @@ class ObjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function imeiimsi()
+    public function imeiimsi(Request $request)
     {
+        if ($request->isMethod('post')) {
+            $error_messages = [
+                'inputValue.required' => 'Поле не може бути порожнім!',
+            ];
+            $this->validate($request, [
+                'inputValue' => 'required',
+            ], $error_messages);
+
+            //по номеру
+            if ($request->type == 'num') {
+                $error_messages = [
+                    'inputValue.digits_between' => 'Перевірте номер, має бути 11-12 цифр (380..., 79...)',
+                ];
+                $this->validate($request, [
+                    'inputValue' => 'digits_between:11,12',
+                ], $error_messages);
+
+                    $traffic = DB::connection('traffic')->table('traffic_line')->select('numbera', 'imsi', 'imei', 'starttime')->where('numbera', $request->inputValue)->get();
+                    if (!$traffic->isEmpty())
+                    {
+                        $uniqueimeis = $traffic->unique('imei')->filter(function ($value, $key) {
+                            return $value->imei;
+                        })->values();
+
+                        foreach ($uniqueimeis as $item)
+                        {
+                            $item->min = $traffic->where('imei', $item->imei)->min('starttime');
+                            $item->max = $traffic->where('imei', $item->imei)->max('starttime');
+                        }
+
+                        return view('objects.imeiimsi', compact('uniqueimeis'));
+                    }
+                return view('objects.imeiimsi', compact('uniqueimeis'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному номеру або його IMSI.']);
+            }
+
+            //по imei
+            if ($request->type == 'imei') {
+                $error_messages = [
+                    'inputValue.digits' => 'Перевірте IMEI, має бути 14 цифр',
+                ];
+                $this->validate($request, [
+                    'inputValue' => 'digits:14',
+                ], $error_messages);
+
+                $traffic = DB::connection('traffic')->table('traffic_line')->select('numbera', 'imsi', 'imei', 'starttime')->where('imei', $request->inputValue)->get();
+                if (!$traffic->isEmpty())
+                {
+                    $uniqueimeis = $traffic->unique('imsi')->filter(function ($value, $key) {
+                        return $value->imsi;
+                    })->values();
+
+                    foreach ($uniqueimeis as $item)
+                    {
+                        $item->min = $traffic->where('imsi', $item->imsi)->min('starttime');
+                        $item->max = $traffic->where('imsi', $item->imsi)->max('starttime');
+                    }
+                    return view('objects.imeiimsi', compact('uniqueimeis'));
+                }
+                return view('objects.imeiimsi', compact('uniqueimeis'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному IMEI.']);
+            }
+
+            //по imsi
+            if ($request->type == 'imsi') {
+                $error_messages = [
+                    'inputValue.digits' => 'Перевірте IMSI, має бути 15 цифр',
+                ];
+                $this->validate($request, [
+                    'inputValue' => 'digits:15',
+                ], $error_messages);
+
+                $traffic = DB::connection('traffic')->table('traffic_line')->select('numbera', 'imsi', 'imei', 'starttime')->where('imsi', $request->inputValue)->get();
+                if (!$traffic->isEmpty())
+                {
+                    $uniqueimeis = $traffic->unique('imei')->filter(function ($value, $key) {
+                        return $value->imei;
+                    })->values();
+
+                    foreach ($uniqueimeis as $item)
+                    {
+                        $item->min = $traffic->where('imei', $item->imei)->min('starttime');
+                        $item->max = $traffic->where('imei', $item->imei)->max('starttime');
+                    }
+
+                    return view('objects.imeiimsi', compact('uniqueimeis'));
+                }
+                return view('objects.imeiimsi', compact('uniqueimeis'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному номеру або його IMSI.']);
+            }
+        }
         return view('objects.imeiimsi');
     }
 }

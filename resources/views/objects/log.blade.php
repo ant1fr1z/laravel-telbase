@@ -30,9 +30,9 @@
                 </tr>
                 @foreach($logs as $log)
                     @if ($log->action == 'update')
-                    <tr class="success">
+                    <tr>
                         <td>{{ $log->created_at }}</td>
-                        <td>{{ $log->action }}</td>
+                        <td class="success">{{ $log->action }}</td>
                         <td>{{ $log->ip }}</td>
                         <td>{{ $log->object_id }}</td>
                         <td>
@@ -61,9 +61,9 @@
                         </td>
                     </tr>
                     @else
-                        <tr class="danger">
+                        <tr>
                             <td>{{ $log->created_at }}</td>
-                            <td>{{ $log->action }}</td>
+                            <td class="danger">{{ $log->action }}</td>
                             <td>{{ $log->ip }}</td>
                             <td>{{ $log->object_id }}</td>
                             <td>

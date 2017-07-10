@@ -126,7 +126,7 @@ Route::get('/log', [
 ]);
 
 //страница поиска IMEI-IMSI
-Route::get('/imei-imsi', [
+Route::match(['get', 'post'],'/imei-imsi', [
     'uses' => 'ObjectsController@imeiimsi',
     'as'=> 'objects.imeiimsi'
 ]);
