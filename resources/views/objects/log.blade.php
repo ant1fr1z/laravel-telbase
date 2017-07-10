@@ -29,36 +29,66 @@
                     <th>Стало</th>
                 </tr>
                 @foreach($logs as $log)
-                    <tr>
+                    @if ($log->action == 'update')
+                    <tr class="success">
                         <td>{{ $log->created_at }}</td>
                         <td>{{ $log->action }}</td>
                         <td>{{ $log->ip }}</td>
                         <td>{{ $log->object_id }}</td>
                         <td>
-                            <table  class="table table-bordered">
-                                <tr><td>{{ $log->old['id'] }}</td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
+                            <table  class="table table-condensed">
+                                <tr><td>ФІО</td><td>{{ $log->old['fio'] }}</td></tr>
+                                <tr><td>ДН</td><td>{{ $log->old['birthday'] }}</td></tr>
+                                <tr><td>Адреса</td><td>{{ $log->old['address'] }}</td></tr>
+                                <tr><td>Робота</td><td>{{ $log->old['work'] }}</td></tr>
+                                <tr><td>Паспорт</td><td>{{ $log->old['passport'] }}</td></tr>
+                                <tr><td>Код</td><td>{{ $log->old['code'] }}</td></tr>
+                                <tr><td>Інше</td><td>{{ $log->old['other'] }}</td></tr>
+                                <tr><td>Джерело</td><td>{{ $log->old['source'] }}</td></tr>
                             </table>
                         </td>
                         <td>
-                            <table  class="table table-bordered">
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
-                                <tr><td></td></tr>
+                            <table  class="table table-condensed">
+                                <tr><td>ФІО</td><td>{{ $log->new['fio'] }}</td></tr>
+                                <tr><td>ДН</td><td>{{ $log->new['birthday'] }}</td></tr>
+                                <tr><td>Адреса</td><td>{{ $log->new['address'] }}</td></tr>
+                                <tr><td>Робота</td><td>{{ $log->new['work'] }}</td></tr>
+                                <tr><td>Паспорт</td><td>{{ $log->new['passport'] }}</td></tr>
+                                <tr><td>Код</td><td>{{ $log->new['code'] }}</td></tr>
+                                <tr><td>Інше</td><td>{{ $log->new['other'] }}</td></tr>
+                                <tr><td>Джерело</td><td>{{ $log->new['source'] }}</td></tr>
                             </table>
                         </td>
                     </tr>
+                    @else
+                        <tr class="danger">
+                            <td>{{ $log->created_at }}</td>
+                            <td>{{ $log->action }}</td>
+                            <td>{{ $log->ip }}</td>
+                            <td>{{ $log->object_id }}</td>
+                            <td>
+                                <table  class="table table-condensed">
+                                    <tr><td>ФІО</td><td>{{ $log->old['fio'] }}</td></tr>
+                                    <tr><td>ДН</td><td>{{ $log->old['birthday'] }}</td></tr>
+                                    <tr><td>Адреса</td><td>{{ $log->old['address'] }}</td></tr>
+                                    <tr><td>Робота</td><td>{{ $log->old['work'] }}</td></tr>
+                                    <tr><td>Паспорт</td><td>{{ $log->old['passport'] }}</td></tr>
+                                    <tr><td>Код</td><td>{{ $log->old['code'] }}</td></tr>
+                                    <tr><td>Інше</td><td>{{ $log->old['other'] }}</td></tr>
+                                    <tr><td>Джерело</td><td>{{ $log->old['source'] }}</td></tr>
+                                </table>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    @endif
                 @endforeach
             </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ $logs->links() }}
         </div>
     </div>
 @endsection

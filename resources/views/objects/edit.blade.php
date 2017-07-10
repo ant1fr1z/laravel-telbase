@@ -101,7 +101,7 @@
             <h3>Додаткові номера</h3>
             <form action="{{ route('objects.addnumber', ['object_id' => $object->id]) }}" method="POST">
             <div class="input-group">
-                <input type="text" class="form-control" name="inputAddNumber" id="inputAddNumber" placeholder="Введіть номер..." value="{{ Request::old('inputAddNumber') }}" >
+                <input type="text" class="form-control" name="inputAddNumber" id="inputAddNumber" placeholder="Введіть повний номер..." value="{{ Request::old('inputAddNumber') }}" >
                   <span class="input-group-btn">
                       <button type="submit" class="btn btn-default" type="button">+</button>
                   </span>

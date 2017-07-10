@@ -70,7 +70,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="inputObject2">Об'єкт 2</label>
-                    <input type="text" class="form-control" name="inputObject2" id="inputObject2" placeholder="Об'єкт 2"
+                    <input type="text" class="form-control" name="inputObject2" id="inputObject2" placeholder="Введіть повний номер..."
                            value="">
                 </div>
             </div>

@@ -399,9 +399,18 @@ class ObjectsController extends Controller
         $logs = Log::orderBy('created_at', 'desc')->paginate(5);
         foreach ($logs as $log) {
             $log['old'] = json_decode($log->old, true);
-            //dd($log);
+            $log['new'] = json_decode($log->new, true);
         }
-        //dd($logs);
         return view('objects.log', compact('logs'));
+    }
+
+    /**
+     * Страничка поиска IMEI-IMSI
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function imeiimsi()
+    {
+        return view('objects.imeiimsi');
     }
 }
