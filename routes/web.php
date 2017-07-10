@@ -132,5 +132,3 @@ Route::match(['get', 'post'],'/imei-imsi', [
 ]);
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index');
