@@ -18,8 +18,8 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <h3>Создать объект для {{ $number_id }}</h3>
-            <form class="form-horizontal" action="{{ route('objects.store', ['number_id' => $number_id]) }}" method="POST">
+            <h3>Создать объект для {{ $number }}</h3>
+            <form class="form-horizontal" action="{{ route('objects.store', ['number' => $number]) }}" method="POST">
                 <div class="form-group">
                     <label for="inputFio" class="col-sm-2 control-label">ФИО/Кличка</label>
                     <div class="col-sm-10">

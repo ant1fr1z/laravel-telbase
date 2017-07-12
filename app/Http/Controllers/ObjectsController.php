@@ -16,7 +16,7 @@ use Excel;
 class ObjectsController extends Controller
 {
     /**
-     * Display a listing of the resource.2
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -30,10 +30,14 @@ class ObjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($number_id)
+    public function create($number)
     {
-        Number::findOrFail($number_id);
-        return view('objects.create', ['number_id' => $number_id]);
+        $num = Number::where('number', $number)->has('object')->first();
+        if (empty($num))
+        {
+            return view('objects.create', ['number' => $number]);
+        }
+        return redirect()->route('index')->withErrors(['message' => 'Помилка! Даний номер вже привязаний до об\'єкту.']);
     }
 
     /**
@@ -42,10 +46,15 @@ class ObjectsController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $number_id)
+    public function store(Request $request, $number)
     {
 
-        $number = Number::findOrFail($number_id);
+        $num = Number::where('number', $number)->first();
+        if (empty($num))
+        {
+            $num = Number::create(['number' => $number]);
+        }
+
         $this->validate($request, [
             'inputFio' => 'required',
             'inputBirthDay' => 'sometimes|nullable|date',
@@ -63,10 +72,9 @@ class ObjectsController extends Controller
         $object->source = $request['inputSource'];
         $object->save();
 
-        $object->numbers()->save($number);
+        $object->numbers()->save($num);
 
         return redirect()->route('objects.edit', ['$object_id' => $object->id]);
-
     }
 
 
@@ -80,19 +88,18 @@ class ObjectsController extends Controller
     {
         $error_messages = [
             'inputNumber.required' => 'Поле не може бути пустим!',
-            'inputNumber.exists' => 'Помилка, швидше кличте адміністратора!',
         ];
 
         $this->validate($request, [
-            'inputNumber' => 'required|exists:numbers,number'
+            'inputNumber' => 'required'
         ], $error_messages);
 
 
         $number = Number::with('object')->where('number', $request['inputNumber'])->first();
         //dd($number);
 
-        if (empty($number->object)) {
-            return redirect()->back()->withErrors(['message' => 'Номер не знайдено в базі. <a href="' . route('objects.create', ['number_id' => $number->id]) . '">Додати?</a>']);
+        if (empty($number) || empty($number->object)) {
+            return redirect()->back()->withErrors(['message' => 'Об\'єкт з вказаним номером не знайдено в базі. <a href="' . route('objects.create', ['number' => $request->inputNumber]) . '">Додати?</a>']);
         }
         $request->flash();
         return view('objects.show', compact('number'));
@@ -183,11 +190,15 @@ class ObjectsController extends Controller
         return redirect()->back();
     }
 
+    //добавление номера, сделать ВАЛИДАЦИЮ!!!
     public function addnumber(Request $request, $object_id)
     {
         $number = Number::where('number', $request['inputAddNumber'])->first();
+        if (empty($number))
+        {
+            $number = Number::create(['number' => $request['inputAddNumber']]);
+        }
 
-        //dd($number);
         if (empty($number)) {
             return redirect()->back()->withErrors(['message' => 'Помилка, швидше кличте адміністратора!']);
         } else {
@@ -266,21 +277,20 @@ class ObjectsController extends Controller
     {
         $error_messages = [
             'object2number.required' => 'Поле "Об\'єкт 2" не може бути порожнім!',
-            'object2number.exists' => 'Помилка, швидше кличте адміністратора!',
             'description.required' => 'Опис зв\'язку не може бути порожнім!',
         ];
 
         $this->validate($request, [
-            'object2number' => 'required|exists:numbers,number',
+            'object2number' => 'required',
             'description' => 'required',
         ], $error_messages);
 
         $object2number = Number::with('object')->where('number', $request['object2number'])->first();
-        if (!is_null($object2number->object)) {
-            return response()->json(['number2' => $object2number]);
-        } else {
-            return response()->json(['errors' => ['0' => 'Второй объект не найден в базе. <a href="' . route('objects.create', ['number_id' => $object2number->id]) . '">Добавить?</a>']], 404);
+        if(empty($object2number) || empty($object2number->object))
+        {
+            return response()->json(['errors' => ['0' => 'Об\'єкт з вказаним номером не знайдено в базі. <a href="' . route('objects.create', ['number' => $request['object2number']]) . '">Додати?</a>']], 404);
         }
+            return response()->json(['number2' => $object2number]);
     }
 
     public function addLink(Request $request)
