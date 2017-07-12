@@ -16,7 +16,7 @@ use Excel;
 class ObjectsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource.2
      *
      * @return \Illuminate\Http\Response
      */
