@@ -199,10 +199,6 @@ class ObjectsController extends Controller
             $number = Number::create(['number' => $request['inputAddNumber']]);
         }
 
-        if (empty($number)) {
-            return redirect()->back()->withErrors(['message' => 'Помилка, швидше кличте адміністратора!']);
-        } else {
-
             if (!is_null($number->object)) {
                 return redirect()->back()->withErrors(['message' => 'Номер вже прив\'язаний  до <a href="' . route('objects.edit', ['$object_id' => $number->object->id]) . '">об\'єкту</a>!']);
             }
@@ -210,7 +206,6 @@ class ObjectsController extends Controller
             $number->object()->associate($object)->save();
 
             return redirect()->back();
-        }
     }
 
     public function delnumber($object_id, $number_id)
