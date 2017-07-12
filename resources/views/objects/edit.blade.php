@@ -138,7 +138,7 @@
         <div class="col-md-offset-2 col-md-3">
             <h3>Дії</h3>
             <div class="list-group">
-                <a href="" class="list-group-item">Експортувати до Excel</a>
+                <a href="{{ route('objects.getexcelfromobject', ['object_id' => $object->id]) }}" class="list-group-item">Експортувати до Excel</a>
                 <a href="{{ route('objects.destroy', ['object_id' => $object->id]) }}" class="list-group-item" id="delobject">Видалити</a>
             </div>
         </div>

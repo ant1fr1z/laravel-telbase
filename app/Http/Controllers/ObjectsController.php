@@ -15,21 +15,13 @@ use Excel;
 
 class ObjectsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /** ГЛАВНАЯ */
     public function index()
     {
         return view('index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /** окно создания объекта */
     public function create($number)
     {
         $num = Number::where('number', $number)->has('object')->first();
@@ -40,12 +32,7 @@ class ObjectsController extends Controller
         return redirect()->route('index')->withErrors(['message' => 'Помилка! Даний номер вже привязаний до об\'єкту.']);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+    /** сохранение созданного объекта */
     public function store(Request $request, $number)
     {
 
@@ -78,12 +65,7 @@ class ObjectsController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
+    /** отображение найденного объекта */
     public function show(Request $request)
     {
         $error_messages = [
@@ -105,18 +87,14 @@ class ObjectsController extends Controller
         return view('objects.show', compact('number'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
+    /** окно редактирования объекта */
     public function edit($object_id)
     {
         $object = Object::find($object_id);
         return view('objects.edit', compact('object'));
     }
 
+    /** история по объекту */
     public function history($object_id)
     {
         $object = Object::with('numbers')->find($object_id);
@@ -150,13 +128,7 @@ class ObjectsController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
+    /** сохранение отредактированого объекта */
     public function update(Request $request, $object_id)
     {
         $this->validate($request, [
@@ -190,7 +162,7 @@ class ObjectsController extends Controller
         return redirect()->back();
     }
 
-    //добавление номера, сделать ВАЛИДАЦИЮ!!!
+    /** добавление привязанного номера */
     public function addnumber(Request $request, $object_id)
     {
         $number = Number::where('number', $request['inputAddNumber'])->first();
@@ -208,6 +180,7 @@ class ObjectsController extends Controller
             return redirect()->back();
     }
 
+    /** удаление привязанного номера */
     public function delnumber($object_id, $number_id)
     {
         $number = Number::findOrFail($number_id);
@@ -215,12 +188,7 @@ class ObjectsController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
+    /** удаление объекта со всеми его связими */
     public function destroy($object_id)
     {
         $object = Object::findOrFail($object_id);
@@ -243,12 +211,7 @@ class ObjectsController extends Controller
         return redirect()->route('index');
     }
 
-    /**
-     * Страничка связей объекта
-     *
-     * @param  int $object_id
-     * @return \Illuminate\Http\Response
-     */
+    /** страничка связей объекта */
     public function links($object_id)
     {
         $object = Object::find($object_id);
@@ -262,12 +225,7 @@ class ObjectsController extends Controller
 
     }
 
-    /**
-     * Страничка связей объекта
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
+    /** модальное окно связей объекта */
     public function linkModal(Request $request)
     {
         $error_messages = [
@@ -288,6 +246,7 @@ class ObjectsController extends Controller
             return response()->json(['number2' => $object2number]);
     }
 
+    /** добавление связи */
     public function addLink(Request $request)
     {
         $link = new Link();
@@ -298,12 +257,14 @@ class ObjectsController extends Controller
         $link->save();
     }
 
+    /** удаление связи */
     public function delLink($link_id)
     {
         Link::destroy($link_id);
         return redirect()->back();
     }
 
+    /** поиска по списку */
     public function searchlist(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -329,6 +290,7 @@ class ObjectsController extends Controller
         return view('objects.list');
     }
 
+    /** поиск по объекту */
     public function searchobject(Request $request)
     {
         if ( isset($request->inputFio) || isset($request->inputAddress) || isset($request->inputWork) || isset($request->inputPassport) || isset($request->inputCode) || isset($request->inputSource) || isset($request->inputUpdatedAt1) && isset($request->inputUpdatedAt2) ) {
@@ -350,6 +312,7 @@ class ObjectsController extends Controller
         return view('objects.searchobject');
     }
 
+    /** експорт объектов из поиска по списку в ексель */
     public function getexcelfromlist(Request $request)
     {
         $objects = Number::has('object')->with('object')->whereIn('number', json_decode($request->numberList))->get()->toArray();
@@ -372,6 +335,7 @@ class ObjectsController extends Controller
         })->export('xlsx');
     }
 
+    /** експорт объектов из поиска по объекту в ексель */
     public function getexcelfromobjects(Request $request)
     {
         $query = json_decode($request->queryList);
@@ -395,11 +359,89 @@ class ObjectsController extends Controller
         })->export('xlsx');
     }
 
-    /**
-     * Страничка с логом изменений базы
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /** експорт объекта в ексель */
+    public function getexcelfromobject($object_id)
+    {
+        /** вкладка Объект */
+        $object = Object::with('numbers')->findOrFail($object_id);
+
+        /** вкладка Связи */
+        $objectLinks = Link::where('object1', $object_id)->orWhere('object2', $object_id)->get();
+        $objectLinks->each(function ($item, $key) {
+            $item->object1info = Object::find($item->object1);
+            $item->object2info = Object::find($item->object2);
+        });
+
+        /** вкладка История */
+        $history = collect();
+        foreach ($object->numbers as $number)
+        {
+            $traffic = DB::connection('traffic')->table('traffic_line')->select('numbera', 'imsi', 'imei', 'starttime')->where('numbera', $number->number)->get();
+            if (!$traffic->isEmpty())
+            {
+                $uniqueimeis = $traffic->unique('imei')->filter(function ($value, $key) {
+                    return $value->imei;
+                })->values();
+
+                foreach ($uniqueimeis as $item)
+                {
+                    $item->min = $traffic->where('imei', $item->imei)->min('starttime');
+                    $item->max = $traffic->where('imei', $item->imei)->max('starttime');
+                }
+
+                $history->push($uniqueimeis);
+            }
+        }
+        $history = $history->flatten();
+
+        /** формируем ексаль файл из данных */
+        Excel::create('pol_'.time().'_objectcard', function($excel) use($object, $objectLinks, $history) {
+            $excel->sheet('Об\'єкт', function($sheet) use($object) {
+                $sheet->setOrientation('landscape');
+                $sheet->row(1, array('Ідентифікатор', 'ФІО', 'Дата народження', 'Адреса', 'Робота', 'Паспорт', 'Ід.код', 'Інше', 'Джерело', 'Додано', 'Оновлено'));
+                $sheet->row(1, function($row) {
+
+                    $row->setBackground('#D3D3D3');
+                    $row->setFontSize(12);
+                    $row->setFontWeight('bold');
+
+                });
+                    $sheet->appendRow(array($object->numbers->implode('number', ', '), $object['fio'], $object['birthday'], $object['address'], $object['work'], $object['passport'], $object['code'], $object['other'], $object['source'], $object['created_at'], $object['updated_at']));
+            });
+            $excel->sheet('Зв\'язки', function($sheet) use($objectLinks) {
+                $sheet->setOrientation('landscape');
+                $sheet->row(1, array('Об\'єкт 1', 'Тип', 'Об\'єкт 2', 'Опис'));
+                $sheet->row(1, function($row) {
+
+                    $row->setBackground('#D3D3D3');
+                    $row->setFontSize(12);
+                    $row->setFontWeight('bold');
+
+                });
+                foreach ($objectLinks as $objectLink)
+                {
+                    $sheet->appendRow(array($objectLink['object1'], $objectLink['linktype'], $objectLink['object2'], $objectLink['description']));
+                }
+            });
+            $excel->sheet('Історія', function($sheet) use($history) {
+                $sheet->setOrientation('landscape');
+                    $sheet->row(1, array('Номер', 'IMSI', 'IMEI', 'Початкова дата', 'Кінцева дата'));
+                $sheet->row(1, function($row) {
+
+                    $row->setBackground('#D3D3D3');
+                    $row->setFontSize(12);
+                    $row->setFontWeight('bold');
+
+                });
+                foreach ($history as $item)
+                {
+                    $sheet->appendRow(array($item->numbera, $item->imsi, $item->imei, $item->min, $item->max));
+                }
+            });
+        })->export('xlsx');
+    }
+
+    /** страничка с Логом */
     public function getLog()
     {
         if (Auth::check()) {
@@ -413,11 +455,7 @@ class ObjectsController extends Controller
         return redirect('/login');
     }
 
-    /**
-     * Страничка поиска IMEI-IMSI
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /** страничка поиска IMEI-IMSI */
     public function imeiimsi(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -428,7 +466,7 @@ class ObjectsController extends Controller
                 'inputValue' => 'required',
             ], $error_messages);
 
-            //по номеру
+            /** по номеру */
             if ($request->type == 'num') {
                 $error_messages = [
                     'inputValue.digits_between' => 'Перевірте номер, має бути 11-12 цифр (380..., 79...)',
@@ -455,7 +493,7 @@ class ObjectsController extends Controller
                 return view('objects.imeiimsi', compact('uniqueimeis'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному номеру або його IMSI.']);
             }
 
-            //по imei
+            /** по имеи */
             if ($request->type == 'imei') {
                 $error_messages = [
                     'inputValue.digits' => 'Перевірте IMEI, має бути 14 цифр',
@@ -481,7 +519,7 @@ class ObjectsController extends Controller
                 return view('objects.imeiimsi', compact('uniqueimeis'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному IMEI.']);
             }
 
-            //по imsi
+            /** по имси */
             if ($request->type == 'imsi') {
                 $error_messages = [
                     'inputValue.digits' => 'Перевірте IMSI, має бути 15 цифр',

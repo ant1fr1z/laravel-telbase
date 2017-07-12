@@ -48,12 +48,17 @@ Route::match(['get', 'post'],'/searchobject', [
     'as'=> 'objects.searchobject'
 ]);
 
-//експорт в excel
+//експорт из списка в excel
 Route::post('/getexcelfromlist', [
     'uses' => 'ObjectsController@getexcelfromlist',
     'as'=> 'objects.getexcelfromlist'
 ]);
-//експорт в excel
+//експорт всего объекта в excel
+Route::get('/{object_id}/getexcelfromobject', [
+    'uses' => 'ObjectsController@getexcelfromobject',
+    'as'=> 'objects.getexcelfromobject'
+]);
+//експорт из поиска по объекту в excel
 Route::post('/getexcelfromobjects', [
     'uses' => 'ObjectsController@getexcelfromobjects',
     'as'=> 'objects.getexcelfromobjects'
