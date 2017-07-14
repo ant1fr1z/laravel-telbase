@@ -70,10 +70,11 @@ class ObjectsController extends Controller
     {
         $error_messages = [
             'inputNumber.required' => 'Поле не може бути пустим!',
+            'inputNumber.telnumber' => 'Помилка! Перевірте введений номер мобільного терміналу.',
         ];
 
         $this->validate($request, [
-            'inputNumber' => 'required'
+            'inputNumber' => 'required|telnumber'
         ], $error_messages);
 
 
@@ -165,6 +166,15 @@ class ObjectsController extends Controller
     /** добавление привязанного номера */
     public function addnumber(Request $request, $object_id)
     {
+        $error_messages = [
+            'inputAddNumber.required' => 'Поле не може бути пустим!',
+            'inputAddNumber.telnumber' => 'Помилка! Номер мобільного терміналу має включати 12 цифр (380xxxxxxxxx).',
+        ];
+
+        $this->validate($request, [
+            'inputAddNumber' => 'required|telnumber'
+        ], $error_messages);
+
         $number = Number::where('number', $request['inputAddNumber'])->first();
         if (empty($number))
         {
@@ -230,11 +240,12 @@ class ObjectsController extends Controller
     {
         $error_messages = [
             'object2number.required' => 'Поле "Об\'єкт 2" не може бути порожнім!',
+            'object2number.telnumber' => 'Помилка! Номер мобільного терміналу має включати 12 цифр (380xxxxxxxxx).',
             'description.required' => 'Опис зв\'язку не може бути порожнім!',
         ];
 
         $this->validate($request, [
-            'object2number' => 'required',
+            'object2number' => 'required|telnumber',
             'description' => 'required',
         ], $error_messages);
 
