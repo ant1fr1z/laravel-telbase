@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Number;
+use Carbon\Carbon;
+use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Excel;
@@ -32,9 +34,19 @@ class NumbersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function test()
     {
-        //
+        $a = 200;
+        $b = ($a >> 8) - 110;
+        echo ($a >> 8);
+        echo '<br>';
+        $c = unpack("C", pack("C", $a));
+        $d = $c[1] - 110;
+        echo ''.$b.'/'.$d.'';
+        echo '<br>';
+        $dt = Carbon::createFromTimestamp(543046447)->toDateTimeString();
+        Carbon::setToStringFormat('d/M/y  H:m:s');
+        echo $dt;
     }
 
     /**

@@ -29,6 +29,11 @@ Route::get('/save', [
     'uses' => 'NumbersController@index',
     'as'=> 'save'
 ]);
+//test
+Route::get('/test', [
+    'uses' => 'NumbersController@test',
+    'as'=> 'test'
+]);
 
 //страница создания объекта
 Route::get('/{number}/create', [
