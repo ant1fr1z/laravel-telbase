@@ -37,7 +37,7 @@ class NumbersController extends Controller
     public function test()
     {
         //обработка rxtx
-        $a = 200;
+        $a = 7979;
         $b = ($a >> 8) - 110;
         echo '<br>';
         $c = unpack("C", pack("C", $a));
@@ -69,12 +69,10 @@ class NumbersController extends Controller
         if ($num3 == 0)
         {
             $lon = -$lon;
-            echo 'num 3 null';
         }
         if ($num2 == 0)
         {
             $lat = -$lat;
-            echo 'num 3 null';
         }
 
         print_r($lat);
@@ -82,10 +80,30 @@ class NumbersController extends Controller
         print_r($lon);
 
         //обработка даты
-        $dt = Carbon::createFromTimestamp(543046447)->toDateTimeString();
-        Carbon::setToStringFormat('d/M/y  H:m:s');
-        echo $dt;
-        echo '<br>';
+        $date = 562265147;
+        $ignoreSeconds = false;
+
+        $hour = 0;
+        $minute = 0;
+        $second = 0;
+        $tmp = (int) ($date / 86400);
+        $tmp3 = intval($tmp / 372);
+        $month = intval((($tmp - ($tmp3 * 372)) / 31) + 1);
+        $day = intval((($tmp - ($tmp3 * 372)) - (($month - 1) * 31)) + 1);
+        $tmp2 = ((int) $date) - ($tmp * 86400);
+        //dd($date);
+        if (!$ignoreSeconds)
+        {
+            $hour = intval($tmp2 / 3600);
+            $tmp9 = intval($hour * 3600);
+            $minute = intval(($tmp2 - $tmp9) / 60);
+            $tmp9 += $minute * 60;
+            $second = intval($tmp2 - $tmp9);
+        }
+
+        $dt = Carbon::create($tmp3+2000, $month, $day, $hour, $minute, $second);
+        $dt->timezone = 'Europe/Kiev';
+        echo $dt->toDateTimeString();
     }
 
     /**
