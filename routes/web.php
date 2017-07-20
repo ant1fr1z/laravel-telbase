@@ -35,6 +35,12 @@ Route::get('/test', [
     'as'=> 'test'
 ]);
 
+//temp
+Route::get('/test', [
+    'uses' => 'NumbersController@test',
+    'as'=> 'test'
+]);
+
 //страница создания объекта
 Route::get('/{number}/create', [
     'uses' => 'ObjectsController@create',
