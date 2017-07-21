@@ -559,4 +559,10 @@ class ObjectsController extends Controller
         }
         return view('objects.imeiimsi');
     }
+
+    /** страничка с Картой */
+    public function map()
+    {
+        return view('objects.map');
+    }
 }

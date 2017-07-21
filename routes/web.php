@@ -141,6 +141,12 @@ Route::get('/log', [
     'as'=> 'objects.getLog'
 ]);
 
+//отображение страницы лога изменений базы
+Route::get('/map', [
+    'uses' => 'ObjectsController@map',
+    'as'=> 'objects.map'
+]);
+
 //страница поиска IMEI-IMSI
 Route::match(['get', 'post'],'/imei-imsi', [
     'uses' => 'ObjectsController@imeiimsi',
