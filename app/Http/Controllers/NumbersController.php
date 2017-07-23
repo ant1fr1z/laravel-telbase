@@ -46,7 +46,7 @@ class NumbersController extends Controller
         echo '<br>';
 
         //обработка координат
-        $num = 64131765387421387;
+        $num = 64169494916941148;
         $num3 = $num >> 30;
         $num3 = $num3 >> 24;
         $num3 .= 1;
