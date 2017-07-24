@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,15 +19,20 @@ class Kernel extends ConsoleKernel
     ];
 
     /**
-     * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
+     * ФУНКЦИЯ
+     * ФОРМИРОВАНИЯ
+     * СТАТИСТИКИ
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function () {
+            $dayCount = DB::table('objects')->whereBetween('created_at', [Carbon::now()->subDay(), Carbon::now()])->orWhereBetween('updated_at', [Carbon::now()->subDay(), Carbon::now()])->count();
+            $weekCount = DB::table('objects')->whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->orWhereBetween('updated_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
+            $monthCount = DB::table('objects')->whereBetween('created_at', [Carbon::now()->subMonth(), Carbon::now()])->orWhereBetween('updated_at', [Carbon::now()->subMonth(), Carbon::now()])->count();
+            DB::table('statistics')->where('key', 'day_count')->update(['intValue' => $dayCount]);
+            DB::table('statistics')->where('key', 'week_count')->update(['intValue' => $weekCount]);
+            DB::table('statistics')->where('key', 'month_count')->update(['intValue' => $monthCount]);
+        })->daily();
     }
 
     /**

@@ -10,7 +10,7 @@
             <li role="presentation" class="active"><a href="#">Об'єкт</a></li>
             <li role="presentation"><a href="{{ route('objects.links', ['object_id' => $object->id]) }}">Зв'язки</a></li>
             <li role="presentation"><a href="{{ route('objects.history', ['object_id' => $object->id]) }}">Історія</a></li>
-            <li role="presentation"><a href="#">База "Р"</a></li>
+            <li role="presentation"><a href="{{ route('objects.locations', ['object_id' => $object->id]) }}">Геодані</a></li>
         </ul>
     </tabs>
     <div class="row">
@@ -30,27 +30,27 @@
             <h3>Редагувати об'єкт</h3>
             <form class="form-horizontal" action="{{ route('objects.update', ['object_id' => $object->id]) }}" method="POST">
                 <div class="form-group">
-                    <label for="inputFio" class="col-sm-2 control-label">ФИО/Кличка</label>
+                    <label for="inputFio" class="col-sm-2 control-label">ФІО/Кличка</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputFio" id="inputFio" placeholder="ФИО/Кличка" value="{{ $object->fio }}">
+                        <input type="text" class="form-control" name="inputFio" id="inputFio" placeholder="ФІО/Кличка" value="{{ $object->fio }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputBirthDay" class="col-sm-2 control-label">Дата рождения</label>
+                    <label for="inputBirthDay" class="col-sm-2 control-label">Дата народження</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputBirthDay" id="inputBirthDay" placeholder="Дата рождения" value="{{ $object->birthday }}">
+                        <input type="text" class="form-control" name="inputBirthDay" id="inputBirthDay" placeholder="Дата народження" value="{{ $object->birthday }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputAddress" class="col-sm-2 control-label">Адрес</label>
+                    <label for="inputAddress" class="col-sm-2 control-label">Адреса</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="3" name="inputAddress" id="inputAddress" placeholder="Адрес">{{ $object->address }}</textarea>
+                        <textarea class="form-control" rows="3" name="inputAddress" id="inputAddress" placeholder="Адреса">{{ $object->address }}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputWork" class="col-sm-2 control-label">Работа</label>
+                    <label for="inputWork" class="col-sm-2 control-label">Робота</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="3" name="inputWork" id="inputWork" placeholder="Работа">{{ $object->work }}</textarea>
+                        <textarea class="form-control" rows="3" name="inputWork" id="inputWork" placeholder="Робота">{{ $object->work }}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -60,38 +60,38 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCode" class="col-sm-2 control-label">Ид. код</label>
+                    <label for="inputCode" class="col-sm-2 control-label">Ід. код</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputCode" id="inputCode" placeholder="Ид. код" value="{{ $object->code }}">
+                        <input type="text" class="form-control" name="inputCode" id="inputCode" placeholder="Ід. код" value="{{ $object->code }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputOther" class="col-sm-2 control-label">Другое</label>
+                    <label for="inputOther" class="col-sm-2 control-label">Інше</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="3" name="inputOther" id="inputOther" placeholder="Другое">{{ $object->other }}</textarea>
+                        <textarea class="form-control" rows="3" name="inputOther" id="inputOther" placeholder="Інше">{{ $object->other }}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputSource" class="col-sm-2 control-label">Источник</label>
+                    <label for="inputSource" class="col-sm-2 control-label">Джерело</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputSource" id="inputSource" placeholder="Источник" value="{{ $object->source }}">
+                        <input type="text" class="form-control" name="inputSource" id="inputSource" placeholder="Джерело" value="{{ $object->source }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCreated_at" class="col-sm-2 control-label">Создано</label>
+                    <label for="inputCreated_at" class="col-sm-2 control-label">Створено</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputCreated_at" id="inputCreated_at" placeholder="" value="{{ $object->created_at }}" readonly>
+                        <input type="text" class="form-control" name="inputCreated_at" id="inputCreated_at" placeholder="Створено" value="{{ $object->created_at }}" readonly>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputUpdated_at" class="col-sm-2 control-label">Обновлено</label>
+                    <label for="inputUpdated_at" class="col-sm-2 control-label">Оновлено</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="inputUpdated_at" id="inputUpdated_at" placeholder="" value="{{ $object->updated_at }}" readonly>
+                        <input type="text" class="form-control" name="inputUpdated_at" id="inputUpdated_at" placeholder="Оновлено" value="{{ $object->updated_at }}" readonly>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default">Сохранить</button>
+                            <button type="submit" class="btn btn-default">Зберегти</button>
                     </div>
                 </div>
                 <input type="text" name="_token" value="{{ csrf_token() }}" hidden>

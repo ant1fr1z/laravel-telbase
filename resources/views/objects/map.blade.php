@@ -12,8 +12,6 @@
         }
     </style>
 
-    <script src="https://openlayers.org/en/v4.2.0/build/ol.js" type="text/javascript"></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>
     <div class="row">
         <div class="col-md-12">
             <div id="map" class="map"></div>
@@ -24,7 +22,12 @@
     </div>
 @endsection
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/ol.js') }}">
+@endpush
+
 @push('scripts')
+<script src="{{ asset('js/ol.js') }}"></script>
 <script>
     //координаты для кнопок
     var point1 = ol.proj.fromLonLat([34.540126666667, 49.59034]);
@@ -69,7 +72,10 @@
         'Point' : new ol.style.Style({
             image: new ol.style.Circle({
                 fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 0, 1)'
+                    color: '#ff0900'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#000000', width: 2
                 }),
                 radius: 7
             })

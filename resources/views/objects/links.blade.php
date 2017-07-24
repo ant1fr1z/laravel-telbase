@@ -10,7 +10,7 @@
             <li role="presentation"><a href="{{ route('objects.edit', ['$object_id' => $object->id]) }}">Об'єкт</a></li>
             <li role="presentation" class="active"><a href="#">Зв'язки</a></li>
             <li role="presentation"><a href="{{ route('objects.history', ['object_id' => $object->id]) }}">Історія</a></li>
-            <li role="presentation"><a href="#">База "Р"</a></li>
+            <li role="presentation"><a href="{{ route('objects.locations', ['object_id' => $object->id]) }}">Геодані</a></li>
         </ul>
     </tabs>
     @if(!$objectLinks->isEmpty())

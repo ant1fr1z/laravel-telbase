@@ -8,6 +8,7 @@ use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Excel;
+use Illuminate\Support\Facades\DB;
 
 class NumbersController extends Controller
 {
@@ -36,6 +37,12 @@ class NumbersController extends Controller
      */
     public function test()
     {
+        $dayCount = DB::table('objects')->whereBetween('created_at', [Carbon::now()->subDay(), Carbon::now()])->orWhereBetween('updated_at', [Carbon::now()->subDay(), Carbon::now()])->count();
+        $weekCount = DB::table('objects')->whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->orWhereBetween('updated_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
+        $monthCount = DB::table('objects')->whereBetween('created_at', [Carbon::now()->subMonth(), Carbon::now()])->orWhereBetween('updated_at', [Carbon::now()->subMonth(), Carbon::now()])->count();
+        dd($dayCount);
+
+
         //обработка rxtx
         $a = 7979;
         $b = ($a >> 8) - 110;

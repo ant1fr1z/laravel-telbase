@@ -6,6 +6,7 @@ use App\Link;
 use App\Log;
 use App\Number;
 use App\Object;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -42,11 +43,17 @@ class ObjectsController extends Controller
             $num = Number::create(['number' => $number]);
         }
 
+        $error_messages = [
+            'inputFio.required' => 'Поле "ФІО/Кличка" не може бути порожнім.',
+            'inputBirthDay.date' => 'Поле "Дата народження" має бути у форматі дати.',
+            'inputSource.required' => 'Поле "Джерело" не може бути порожнім.',
+        ];
+
         $this->validate($request, [
             'inputFio' => 'required',
             'inputBirthDay' => 'sometimes|nullable|date',
             'inputSource' => 'required'
-        ]);
+        ], $error_messages);
 
         $object = new Object();
         $object->fio = $request['inputFio'];
@@ -69,7 +76,7 @@ class ObjectsController extends Controller
     public function show(Request $request)
     {
         $error_messages = [
-            'inputNumber.required' => 'Поле не може бути пустим!',
+            'inputNumber.required' => 'Поле не може бути порожнім!',
             'inputNumber.telnumber' => 'Помилка! Перевірте введений номер мобільного терміналу.',
         ];
 
@@ -126,17 +133,22 @@ class ObjectsController extends Controller
         } else {
             return view('objects.history', compact('object', 'history'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному номеру.']);
         }
-
     }
 
     /** сохранение отредактированого объекта */
     public function update(Request $request, $object_id)
     {
+        $error_messages = [
+            'inputFio.required' => 'Поле "ФІО/Кличка" не може бути порожнім.',
+            'inputBirthDay.date' => 'Поле "Дата народження" має бути у форматі дати.',
+            'inputSource.required' => 'Поле "Джерело" не може бути порожнім.',
+        ];
+
         $this->validate($request, [
             'inputFio' => 'required',
             'inputBirthDay' => 'sometimes|nullable|date',
             'inputSource' => 'required'
-        ]);
+        ], $error_messages);
 
         $object = Object::findOrFail($object_id);
         $old = $object->replicate();
@@ -167,7 +179,7 @@ class ObjectsController extends Controller
     public function addnumber(Request $request, $object_id)
     {
         $error_messages = [
-            'inputAddNumber.required' => 'Поле не може бути пустим!',
+            'inputAddNumber.required' => 'Поле з додатковим номером не може бути порожнім.',
             'inputAddNumber.telnumber' => 'Помилка! Номер мобільного терміналу має включати 12 цифр (380xxxxxxxxx).',
         ];
 
@@ -239,9 +251,9 @@ class ObjectsController extends Controller
     public function linkModal(Request $request)
     {
         $error_messages = [
-            'object2number.required' => 'Поле "Об\'єкт 2" не може бути порожнім!',
+            'object2number.required' => 'Поле "Об\'єкт 2" не може бути порожнім.',
             'object2number.telnumber' => 'Помилка! Номер мобільного терміналу має включати 12 цифр (380xxxxxxxxx).',
-            'description.required' => 'Опис зв\'язку не може бути порожнім!',
+            'description.required' => 'Опис зв\'язку не може бути порожнім.',
         ];
 
         $this->validate($request, [
@@ -280,7 +292,7 @@ class ObjectsController extends Controller
     {
         if ($request->isMethod('post')) {
             $error_messages = [
-                'inputList.required' => 'Список не може бути порожнім!',
+                'inputList.required' => 'Список не може бути порожнім.',
             ];
 
             $this->validate($request, [
@@ -293,7 +305,7 @@ class ObjectsController extends Controller
             if ($objects->count() >0) {
                 return view('objects.list', compact('numberList', 'objects'));
             } else {
-                return view('objects.list')->withErrors(['messages' => 'Нічого не знайдено!']);
+                return view('objects.list')->withErrors(['messages' => 'Нічого не знайдено.']);
             }
 
 
@@ -317,7 +329,7 @@ class ObjectsController extends Controller
             if ($objects->count() >0) {
                 return view('objects.searchobject', compact( 'objects'));
             } else {
-                return view('objects.searchobject')->withErrors(['messages' => 'Нічого не знайдено!']);
+                return view('objects.searchobject')->withErrors(['messages' => 'Нічого не знайдено.']);
             }
         }
         return view('objects.searchobject');
@@ -471,7 +483,7 @@ class ObjectsController extends Controller
     {
         if ($request->isMethod('post')) {
             $error_messages = [
-                'inputValue.required' => 'Поле не може бути порожнім!',
+                'inputValue.required' => 'Поле не може бути порожнім.',
             ];
             $this->validate($request, [
                 'inputValue' => 'required',
@@ -501,13 +513,13 @@ class ObjectsController extends Controller
 
                         return view('objects.imeiimsi', compact('uniqueimeis'));
                     }
-                return view('objects.imeiimsi', compact('uniqueimeis'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному номеру або його IMSI.']);
+                return view('objects.imeiimsi', compact('uniqueimeis'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному номеру.']);
             }
 
             /** по имеи */
             if ($request->type == 'imei') {
                 $error_messages = [
-                    'inputValue.digits' => 'Перевірте IMEI, має бути 14 цифр',
+                    'inputValue.digits' => 'Перевірте IMEI, має бути 14 цифр.',
                 ];
                 $this->validate($request, [
                     'inputValue' => 'digits:14',
@@ -533,7 +545,7 @@ class ObjectsController extends Controller
             /** по имси */
             if ($request->type == 'imsi') {
                 $error_messages = [
-                    'inputValue.digits' => 'Перевірте IMSI, має бути 15 цифр',
+                    'inputValue.digits' => 'Перевірте IMSI, має бути 15 цифр.',
                 ];
                 $this->validate($request, [
                     'inputValue' => 'digits:15',
@@ -554,7 +566,7 @@ class ObjectsController extends Controller
 
                     return view('objects.imeiimsi', compact('uniqueimeis'));
                 }
-                return view('objects.imeiimsi', compact('uniqueimeis'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному номеру або його IMSI.']);
+                return view('objects.imeiimsi', compact('uniqueimeis'))->withErrors(['message' => 'Інформація відсутня у базі. Завантажте до бази трафік по даному номеру.']);
             }
         }
         return view('objects.imeiimsi');
@@ -564,5 +576,145 @@ class ObjectsController extends Controller
     public function map()
     {
         return view('objects.map');
+    }
+
+    /** страничка статистики базы */
+    public function getStatistics()
+    {
+        return view('objects.statistics');
+    }
+
+    /** страничка с картой для объекта */
+    public function getLocations($object_id)
+    {
+        $rxtx = $this->getRxTx(7979);
+        $lonlat = $this->getLonLat(64169494916941148);
+        $date = $this->getDate(562265147);
+
+        $object = Object::with('numbers')->find($object_id);
+        $history = collect();
+        foreach ($object->numbers as $number)
+        {
+            $traffic = DB::connection('traffic')->table('traffic_line')->select('numbera', 'imsi', 'imei')->where('numbera', $number->number)->get();
+            if (!$traffic->isEmpty())
+            {
+                $uniqueimeis = $traffic->unique('imei')->filter(function ($value) {
+                    return $value->imei;
+                })->values();
+                $history->push($uniqueimeis);
+            }
+        }
+        $history = $history->flatten();
+        if ($history->count() > 0)
+        {
+            $locations = collect();
+            foreach ($history as $item)
+            {
+                $loc = DB::table('locations')->where('imsi', $item->imsi)->orWhere('imei', $item->imei)->get();
+                if (!$loc->isEmpty())
+                {
+                    $locations->push($loc);
+                }
+            }
+            $locations = $locations->flatten()->unique(function ($item) {
+                return $item->imei.$item->imsi.$item->ll['lon'].$item->ll['lat'];
+            })->each(function ($item) {
+                $item->rxtx = $this->getRxTx($item->rxtx);
+                $item->ll = $this->getLonLat($item->rxtx);
+                $item->date = $this->getDate($item->sdate);
+            });
+            if ($locations->count() > 0)
+            {
+                return view('objects.locations', compact('object', 'locations'));
+            }
+            else
+                {
+                    return view('objects.locations', compact('object', 'locations'))->withErrors(['message' => 'Геодані відсутні у базі.']);
+                }
+        }
+        else
+            {
+                return view('objects.locations', compact('object'))->withErrors(['message' => 'У базі відсутні IMEI/IMSI даного номера. Завантажте до бази трафік по даному номеру для перевірки наявності геоданих.']);
+            }
+    }
+
+    /**
+     * ВСПОМАГАТЕЛЬНЫЕ
+     * ФУНКЦИИ
+     * ПРЕОБРАЗОВАНИЯ
+     * ДАННЫХ ИЗ БД "VARAN`a"
+     */
+
+    /** функция преобразования rxtx из базы в массив rx,tx */
+    public static function getRxTx($value)
+    {
+        //обработка rxtx
+        $rxtx['rx'] = ($value >> 8) - 110;
+        $temp = unpack("C", pack("C", $value));
+        $rxtx['tx'] = $temp[1] - 110;
+        return $rxtx;
+    }
+
+    /** функция преобразования LL из базы в массив координат lat,lon*/
+    public static function getLonLat($value)
+    {
+        //обработка координат
+        $value = 64169494916941148;
+        $num3 = $value >> 30;
+        $num3 = $num3 >> 24;
+        $num3 .= 1;
+        $num2 = $value >> 29;
+        $num2 = $num2 >> 24;
+        $num2 .= 1;
+        $num12 = $value << 11;
+        $value = $num12 >> 11;
+        $num4 = $value / 54000000;
+        $num5 = $value - ((int)$num4 * 54000000);
+        $num6 = $num4 / 600000;
+        $num7 = ($num4 - ((int)$num6 * 600000)) / 10000;
+        $num8 = ((int)$num4 - ((int)$num6 * 600000)) - ((int)$num7 * 10000);
+        $num9 = $num5 / 600000;
+        $num10 = ($num5 - ((int)$num9 * 600000)) / 10000;
+        $num11 = ($num5 - ((int)$num9 * 600000)) - ((int)$num10 * 10000);
+        $lat = (int)$num9 + (((int)$num10 + (((double)$num11) / 10000)) / 60.0);
+        $lon = (int)$num6 + (((int)$num7 + (((double)$num8) / 10000)) / 60.0);
+
+        if ($num3 == 0)
+        {
+            $lon = -$lon;
+        }
+        if ($num2 == 0)
+        {
+            $lat = -$lat;
+        }
+        $lonlat['lon'] = $lon;
+        $lonlat['lat'] = $lat;
+
+        return $lonlat;
+    }
+
+    /** функция преобразования SDATE из базы в строку date*/
+    public static function getDate($value)
+    {
+        //обработка даты
+
+        $hour = 0;
+        $minute = 0;
+        $second = 0;
+        $tmp = (int) ($value / 86400);
+        $tmp3 = intval($tmp / 372);
+        $month = intval((($tmp - ($tmp3 * 372)) / 31) + 1);
+        $day = intval((($tmp - ($tmp3 * 372)) - (($month - 1) * 31)) + 1);
+        $tmp2 = ((int) $value) - ($tmp * 86400);
+        $hour = intval($tmp2 / 3600);
+        $tmp9 = intval($hour * 3600);
+        $minute = intval(($tmp2 - $tmp9) / 60);
+        $tmp9 += $minute * 60;
+        $second = intval($tmp2 - $tmp9);
+
+        $dt = Carbon::create($tmp3+2000, $month, $day, $hour, $minute, $second);
+        $dt->timezone = 'Europe/Kiev';
+
+        return $dt->toDateTimeString();;
     }
 }

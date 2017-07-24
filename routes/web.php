@@ -80,7 +80,7 @@ Route::post('/{number_id}/create', [
     'uses' => 'ObjectsController@store',
     'as'=> 'objects.store'
 ]);
-//страница редактирования объекта
+//страница get запроса редактирования объекта
 Route::get('/{object_id}/edit', [
     'uses' => 'ObjectsController@edit',
     'as'=> 'objects.edit'
@@ -90,7 +90,12 @@ Route::get('/{object_id}/history', [
     'uses' => 'ObjectsController@history',
     'as'=> 'objects.history'
 ]);
-//страница редактирования объекта
+//страница местоположения объекта
+Route::get('/{object_id}/locations', [
+    'uses' => 'ObjectsController@getLocations',
+    'as'=> 'objects.locations'
+]);
+//страница post запроса редактирования объекта
 Route::post('/{object_id}/edit', [
     'uses' => 'ObjectsController@update',
     'as'=> 'objects.update'
@@ -139,6 +144,12 @@ Route::get('/{link_id}/delete', [
 Route::get('/log', [
     'uses' => 'ObjectsController@getLog',
     'as'=> 'objects.getLog'
+]);
+
+//отображение страницы статистики базы
+Route::get('/statistics', [
+    'uses' => 'ObjectsController@getStatistics',
+    'as'=> 'objects.statistics'
 ]);
 
 //отображение страницы лога изменений базы

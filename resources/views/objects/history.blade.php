@@ -10,7 +10,7 @@
             <li role="presentation"><a href="{{ route('objects.edit', ['$object_id' => $object->id]) }}">Об'єкт</a></li>
             <li role="presentation"><a href="{{ route('objects.links', ['object_id' => $object->id]) }}">Зв'язки</a></li>
             <li role="presentation" class="active"><a href="#">Історія</a></li>
-            <li role="presentation"><a href="#">База "Р"</a></li>
+            <li role="presentation"><a href="{{ route('objects.locations', ['object_id' => $object->id]) }}">Геодані</a></li>
         </ul>
     </tabs>
     <div class="row">

@@ -32,9 +32,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('objects.getLog') }}">Лог</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="">Управление группами</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="">Регистрация пользователя</a></li>
+                                    <li><a href="{{ route('objects.statistics') }}">Статистика</a></li>
                                 </ul>
                             </li>
                     @endif
