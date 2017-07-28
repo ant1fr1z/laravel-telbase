@@ -8,6 +8,7 @@ use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Excel;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 
 class NumbersController extends Controller
@@ -35,8 +36,10 @@ class NumbersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function test()
+    public function test(Request $request)
     {
+        dd($request->session()->all());
+
         $dayCount = DB::table('objects')->whereBetween('created_at', [Carbon::now()->subDay(), Carbon::now()])->orWhereBetween('updated_at', [Carbon::now()->subDay(), Carbon::now()])->count();
         $weekCount = DB::table('objects')->whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->orWhereBetween('updated_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
         $monthCount = DB::table('objects')->whereBetween('created_at', [Carbon::now()->subMonth(), Carbon::now()])->orWhereBetween('updated_at', [Carbon::now()->subMonth(), Carbon::now()])->count();

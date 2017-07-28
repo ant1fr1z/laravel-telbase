@@ -84,7 +84,6 @@ class ObjectsController extends Controller
             'inputNumber' => 'required|telnumber'
         ], $error_messages);
 
-
         $number = Number::with('object')->where('number', $request['inputNumber'])->first();
         //dd($number);
 
@@ -92,6 +91,17 @@ class ObjectsController extends Controller
             return redirect()->back()->withErrors(['message' => 'Об\'єкт з вказаним номером не знайдено в базі. <a href="' . route('objects.create', ['number' => $request->inputNumber]) . '">Додати?</a>']);
         }
         $request->flash();
+
+            $sessionNumbers = session('numbers');
+            if(count($sessionNumbers) >= 10)
+            {
+                array_shift($sessionNumbers);
+                array_push($sessionNumbers, $request['inputNumber']);
+                $request->session()->forget('numbers');
+                $request->session()->put('numbers', $sessionNumbers);
+            } else {
+                $request->session()->push('numbers', $request['inputNumber']);
+            }
         return view('objects.show', compact('number'));
     }
 
