@@ -71,10 +71,11 @@ class ObjectsController extends Controller
         return redirect()->route('objects.edit', ['$object_id' => $object->id]);
     }
 
-
     /** отображение найденного объекта */
-    public function show(Request $request)
+    public function show(Request $request, $inputnumber = null)
     {
+        if ($request->isMethod('post')) {
+
         $error_messages = [
             'inputNumber.required' => 'Поле не може бути порожнім!',
             'inputNumber.telnumber' => 'Помилка! Перевірте введений номер мобільного терміналу.',
@@ -84,9 +85,11 @@ class ObjectsController extends Controller
             'inputNumber' => 'required|telnumber'
         ], $error_messages);
 
-        $number = Number::with('object')->where('number', $request['inputNumber'])->first();
-        //dd($number);
-
+            $number = Number::with('object')->where('number', $request['inputNumber'])->first();
+        } elseif ($request->isMethod('get')) {
+            $request['inputNumber'] = $inputnumber;
+            $number = Number::with('object')->where('number', $inputnumber)->first();
+        }
         if (empty($number) || empty($number->object)) {
             return redirect()->back()->withErrors(['message' => 'Об\'єкт з вказаним номером не знайдено в базі. <a href="' . route('objects.create', ['number' => $request->inputNumber]) . '">Додати?</a>']);
         }

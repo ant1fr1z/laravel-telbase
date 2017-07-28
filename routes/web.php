@@ -17,11 +17,18 @@ Route::get('/', [
     'as'=> 'index'
 ]);
 
-//отображение найденого объекта
+//отображение найденого объекта post запрос
 Route::post('/', [
     'middleware' => 'telnumber',
     'uses' => 'ObjectsController@show',
     'as'=> 'objects.show'
+]);
+
+//отображение найденого объекта get запрос
+Route::get('/{inputnumber}/show', [
+    'middleware' => 'telnumber',
+    'uses' => 'ObjectsController@show',
+    'as'=> 'objects.getShow'
 ]);
 
 //temp
