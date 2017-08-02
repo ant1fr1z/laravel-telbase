@@ -332,11 +332,11 @@ class ObjectsController extends Controller
         if ( isset($request->inputFio) || isset($request->inputAddress) || isset($request->inputWork) || isset($request->inputPassport) || isset($request->inputCode) || isset($request->inputSource) || isset($request->inputUpdatedAt1) && isset($request->inputUpdatedAt2) ) {
             if ( isset($request->inputUpdatedAt1) && isset($request->inputUpdatedAt2) )
             {
-                $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) REGEXP "'.$request['inputFio'].'" AND IFNULL(address, 0) REGEXP "'.$request['inputAddress'].'" AND IFNULL(work,0) REGEXP "'.$request['inputWork'].'" AND IFNULL(passport,0) REGEXP "'.$request['inputPassport'].'" AND IFNULL(code,0) REGEXP "'.$request['inputCode'].'" AND IFNULL(source,0) REGEXP "'.$request['inputSource'].'"')->whereBetween('updated_at', [$request['inputUpdatedAt1'], $request['inputUpdatedAt2']])->Paginate(500)->appends($_REQUEST);
+                $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) LIKE "%'.$request['inputFio'].'%" AND IFNULL(address, 0) LIKE "%'.$request['inputAddress'].'%" AND IFNULL(work,0) LIKE "%'.$request['inputWork'].'%" AND IFNULL(passport,0) LIKE "%'.$request['inputPassport'].'%" AND IFNULL(code,0) LIKE "%'.$request['inputCode'].'%" AND IFNULL(source,0) LIKE "%'.$request['inputSource'].'%"')->whereBetween('updated_at', [$request['inputUpdatedAt1'], $request['inputUpdatedAt2']])->Paginate(500)->appends($_REQUEST);
             }
             else
             {
-                $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) REGEXP "'.$request['inputFio'].'" AND IFNULL(address, 0) REGEXP "'.$request['inputAddress'].'" AND IFNULL(work,0) REGEXP "'.$request['inputWork'].'" AND IFNULL(passport,0) REGEXP "'.$request['inputPassport'].'" AND IFNULL(code,0) REGEXP "'.$request['inputCode'].'" AND IFNULL(source,0) REGEXP "'.$request['inputSource'].'"')->Paginate(500)->appends($_REQUEST);
+                $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) LIKE "%'.$request['inputFio'].'%" AND IFNULL(address, 0) LIKE "%'.$request['inputAddress'].'%" AND IFNULL(work,0) LIKE "%'.$request['inputWork'].'%" AND IFNULL(passport,0) LIKE "%'.$request['inputPassport'].'%" AND IFNULL(code,0) LIKE "%'.$request['inputCode'].'%" AND IFNULL(source,0) LIKE "%'.$request['inputSource'].'%"')->Paginate(500)->appends($_REQUEST);
             }
             $request->flash();
             if ($objects->count() >0) {
@@ -375,7 +375,7 @@ class ObjectsController extends Controller
     public function getexcelfromobjects(Request $request)
     {
         $query = json_decode($request->queryList);
-        $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) REGEXP "'.$query->inputFio.'" AND IFNULL(address, 0) REGEXP "'.$query->inputAddress.'" AND IFNULL(work,0) REGEXP "'.$query->inputWork.'" AND IFNULL(passport,0) REGEXP "'.$query->inputPassport.'" AND IFNULL(code,0) REGEXP"'.$query->inputCode.'" AND IFNULL(source,0) REGEXP "'.$query->inputSource.'"')->get();
+        $objects = Object::with('numbers')->whereRaw('IFNULL(fio, 0) LIKE "%'.$query->inputFio.'%" AND IFNULL(address, 0) LIKE "%'.$query->inputAddress.'%" AND IFNULL(work,0) LIKE "%'.$query->inputWork.'%" AND IFNULL(passport,0) LIKE "%'.$query->inputPassport.'%" AND IFNULL(code,0) LIKE "%'.$query->inputCode.'%" AND IFNULL(source,0) LIKE "%'.$query->inputSource.'%"')->get();
 
         Excel::create('pol_'.time().'', function($excel) use($objects) {
             $excel->sheet('Список телефонів', function($sheet) use($objects) {

@@ -54,7 +54,7 @@
 </div>
 
 <script src="{{ URL::to('js/jquery-3.2.1.min.js') }}"></script>
-<script src="{{ URL::to('js/bootstrap.min.js') }}"></script>
+<script src="{{ URL::to('js/bootstrap.js') }}"></script>
 <script src="{{ URL::to('js/jquery-ui.min.js') }}"></script>
 <script src="{{ URL::to('js/jquery.validate.min.js') }}"></script>
 <script src="{{ URL::to('js/my.js') }}"></script>

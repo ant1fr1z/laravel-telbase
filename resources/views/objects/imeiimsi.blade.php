@@ -44,7 +44,7 @@
                             <div class="btn-group btn-group-justified" role="group" aria-label="...">
                                 <div class="btn-group" role="group">
                                     <form action="" method="POST">
-                                        <button type="submit" class="btn btn-default" id="getexcelfromlist">Експортувати до Excel</button>
+                                        <button type="submit" class="btn btn-default" id="getexcelfromlist" disabled>Експортувати до Excel</button>
                                         <input type="text" name="_token" value="{{ csrf_token() }}" hidden>
                                         <input type="text" name="type" value="" hidden>
                                         <input type="text" name="inputValue" value="" hidden>
