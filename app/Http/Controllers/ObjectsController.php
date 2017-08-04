@@ -586,8 +586,85 @@ class ObjectsController extends Controller
     }
 
     /** страничка с Картой */
-    public function map()
+    public function map(Request $request)
     {
+        if ($request->isMethod('post')) {
+            $error_messages = [
+                'inputValue.required' => 'Поле не може бути порожнім.',
+            ];
+            $this->validate($request, [
+                'inputValue' => 'required',
+            ], $error_messages);
+
+            /** по номеру */
+            if ($request->type == 'num') {
+                $error_messages = [
+                    'inputValue.digits_between' => 'Перевірте номер, має бути 11-12 цифр (380..., 79...)',
+                ];
+                $this->validate($request, [
+                    'inputValue' => 'digits_between:11,12',
+                ], $error_messages);
+            }
+
+            /** по имеи */
+            if ($request->type == 'imei') {
+                $error_messages = [
+                    'inputValue.digits' => 'Перевірте IMEI, має бути 14 цифр.',
+                ];
+                $this->validate($request, [
+                    'inputValue' => 'digits:14',
+                ], $error_messages);
+
+                $request['inputValue'] = $request->inputValue.'0';
+                $locations = DB::table('locations')->where('imei', $request->inputValue)->get();
+                $locations = $locations->unique(function ($item) {
+                    return $item->imei.$item->imsi.$item->ll;
+                })->each(function ($item) {
+                    $item->rxtx = $this->getRxTx($item->rxtx);
+                    $item->ll = $this->getLonLat($item->ll);
+                    $item->date = $this->getDate($item->sdate);
+                });
+
+                if ($locations->count() > 0)
+                {
+                    return view('objects.map', compact('locations'));
+                }
+                else
+                {
+                    return view('objects.map', compact('locations'))->withErrors(['message' => 'Геодані відсутні у базі.']);
+                }
+
+            }
+
+            /** по имси */
+            if ($request->type == 'imsi') {
+                $error_messages = [
+                    'inputValue.digits' => 'Перевірте IMSI, має бути 15 цифр.',
+                ];
+                $this->validate($request, [
+                    'inputValue' => 'digits:15',
+                ], $error_messages);
+
+                $locations = DB::table('locations')->where('imsi', $request->inputValue)->get();
+                $locations = $locations->unique(function ($item) {
+                    return $item->imei.$item->imsi.$item->ll;
+                })->each(function ($item) {
+                    $item->rxtx = $this->getRxTx($item->rxtx);
+                    $item->ll = $this->getLonLat($item->ll);
+                    $item->date = $this->getDate($item->sdate);
+                });
+
+                if ($locations->count() > 0)
+                {
+                    return view('objects.map', compact('locations'));
+                }
+                else
+                {
+                    return view('objects.map', compact('locations'))->withErrors(['message' => 'Геодані відсутні у базі.']);
+                }
+            }
+        }
+
         return view('objects.map');
     }
 
@@ -600,10 +677,6 @@ class ObjectsController extends Controller
     /** страничка с картой для объекта */
     public function getLocations($object_id)
     {
-        $rxtx = $this->getRxTx(7979);
-        $lonlat = $this->getLonLat(64169494916941148);
-        $date = $this->getDate(562265147);
-
         $object = Object::with('numbers')->find($object_id);
         $history = collect();
         foreach ($object->numbers as $number)
@@ -630,10 +703,10 @@ class ObjectsController extends Controller
                 }
             }
             $locations = $locations->flatten()->unique(function ($item) {
-                return $item->imei.$item->imsi.$item->ll['lon'].$item->ll['lat'];
+                return $item->imei.$item->imsi.$item->ll;
             })->each(function ($item) {
                 $item->rxtx = $this->getRxTx($item->rxtx);
-                $item->ll = $this->getLonLat($item->rxtx);
+                $item->ll = $this->getLonLat($item->ll);
                 $item->date = $this->getDate($item->sdate);
             });
             if ($locations->count() > 0)
@@ -672,7 +745,6 @@ class ObjectsController extends Controller
     public static function getLonLat($value)
     {
         //обработка координат
-        $value = 64169494916941148;
         $num3 = $value >> 30;
         $num3 = $num3 >> 24;
         $num3 .= 1;

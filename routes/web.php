@@ -160,7 +160,7 @@ Route::get('/statistics', [
 ]);
 
 //отображение страницы лога изменений базы
-Route::get('/map', [
+Route::match(['get', 'post'],'/map', [
     'uses' => 'ObjectsController@map',
     'as'=> 'objects.map'
 ]);

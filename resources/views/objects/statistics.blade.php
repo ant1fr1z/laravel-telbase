@@ -20,6 +20,7 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Статистика бази</h3>
+            В процесі розробки
         </div>
     </div>
 @endsection

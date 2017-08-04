@@ -24,6 +24,7 @@
                             <li><a href="{{ route('objects.searchobject') }}">По об'єкту</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{ route('objects.imeiimsi') }}">IMEI-IMSI</a></li>
+                            <li><a href="{{ route('objects.map') }}">На карті</a></li>
                         </ul>
                     </li>
                     @if (Auth::check())
